@@ -1,0 +1,6 @@
+@FreelanceDB_HostAddress = http://localhost:5049
+
+GET {{FreelanceDB_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
