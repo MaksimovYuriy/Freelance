@@ -1,4 +1,6 @@
 using FreelanceDB.Database.Context;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,9 +30,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("Default");
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
+
