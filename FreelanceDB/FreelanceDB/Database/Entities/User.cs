@@ -29,5 +29,14 @@ public partial class User
 
     public virtual ICollection<Task> TaskExecutors { get; set; } = new List<Task>();
 
+    internal User(string login, string passwordhash, string nickname, string? atoken, string? rtoken)
+    {
+        Login = login;
+        PasswordHash = passwordhash;
+        Nickname = nickname;
+        AToken = atoken;
+        RToken = rtoken;
+    }
+    
    
 }

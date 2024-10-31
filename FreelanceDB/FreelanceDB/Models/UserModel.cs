@@ -28,6 +28,7 @@
             RToken = rToken;
             Balance = balance;
             FreezeBalance = freezeBalance;
-        }   
+        }
+        internal UserModel() { }
     }
 }
