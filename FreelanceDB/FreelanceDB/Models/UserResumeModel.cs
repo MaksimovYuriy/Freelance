@@ -1,6 +1,6 @@
 ﻿namespace FreelanceDB.Models
 {
-    public class UserResume
+    public class UserResumeModel
     {
         public long Id { get; set; }
 
@@ -8,11 +8,11 @@
 
         public long ResumeId { get; set; }
 
-        public virtual Resume Resume { get; set; } = null!;
+        public virtual ResumeModel Resume { get; set; } = null!;
 
-        public virtual User User { get; set; } = null!;
+        public virtual UserModel User { get; set; } = null!;
 
-        public UserResume(long id, long userId, long resumeId, Resume resume, User user)
+        public UserResumeModel(long id, long userId, long resumeId, ResumeModel resume, UserModel user)
         {
             Id = id;
             UserId = userId;

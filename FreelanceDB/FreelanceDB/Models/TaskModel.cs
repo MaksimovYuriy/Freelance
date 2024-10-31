@@ -2,7 +2,7 @@
 
 namespace FreelanceDB.Models
 {
-    public class Task
+    public class TaskModel
     {
         public long Id { get; set; }
 
@@ -24,13 +24,7 @@ namespace FreelanceDB.Models
 
         public int StatusId { get; set; }
 
-        public virtual User Author { get; set; } = null!;
-
-        public virtual User? Executor { get; set; }
-
-        public virtual Status Status { get; set; } = null!;
-
-        public Task(long id,string Head, DateOnly Deadline, DateOnly? EndDate, int Price, string Description, string Tag, long AuthorId, long? ExecutorId, int StatusId, User Author, User? Executor, Status Status)
+        public TaskModel(long id,string Head, DateOnly Deadline, DateOnly? EndDate, int Price, string Description, string Tag, long AuthorId, long? ExecutorId, int StatusId)
         {
             Id = id;
             this.Head = Head;
@@ -42,9 +36,6 @@ namespace FreelanceDB.Models
             this.AuthorId = AuthorId;
             this.ExecutorId = ExecutorId;
             this.StatusId = StatusId;
-            this.Author = Author;
-            this.Executor = Executor;
-            this.Status = Status;
 
         }
     }

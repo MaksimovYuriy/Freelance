@@ -2,7 +2,7 @@
 
 namespace FreelanceDB.Models
 {
-    public class Resume
+    public class ResumeModel
     {
         public long Id { get; set; }
 
@@ -10,17 +10,12 @@ namespace FreelanceDB.Models
 
         public long UserId { get; set; }
 
-        public virtual Database.Entities.Task Task { get; set; } = null!;
 
-        public virtual User User { get; set; } = null!;
-
-        public Resume(long id, long taskId, long userId, Database.Entities.Task task, User user)
+        public ResumeModel(long id, long taskId, long userId)
         {
             Id = id;
             TaskId = taskId;
             UserId = userId;
-            Task = task;
-            User = user;
         }
     }
 }
