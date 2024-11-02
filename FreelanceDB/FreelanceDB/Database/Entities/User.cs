@@ -38,5 +38,8 @@ public partial class User
         RToken = rtoken;
     }
     
-   
+    internal User()
+    {
+
+    }
 }

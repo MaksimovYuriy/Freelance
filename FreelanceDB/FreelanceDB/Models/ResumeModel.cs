@@ -6,16 +6,29 @@ namespace FreelanceDB.Models
     {
         public long Id { get; set; }
 
-        public long TaskId { get; set; }
+        public string Head { get; set; } = null!;
 
-        public long UserId { get; set; }
+        public string? WorkExp { get; set; }
 
+        public string? Skills { get; set; }
 
-        public ResumeModel(long id, long taskId, long userId)
+        public string? Education { get; set; }
+
+        public string? AboutMe { get; set; }
+
+        public string? Contacts { get; set; }
+
+        public ResumeModel(long id, string head, string? workExp, string? skills, string? education, string? aboutMe, string? contacts)
         {
-            Id = id;
-            TaskId = taskId;
-            UserId = userId;
+            this.Id = id;
+            this.Head = head;
+            this.WorkExp = workExp;
+            this.Skills = skills;
+            this.Education = education;
+            this.AboutMe = aboutMe;
+            this.Contacts = contacts;
         }
+
+        public ResumeModel() { }
     }
 }

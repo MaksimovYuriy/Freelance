@@ -24,7 +24,7 @@ namespace FreelanceDB.Models
 
         public int StatusId { get; set; }
 
-        public TaskModel(long id,string Head, DateOnly Deadline, DateOnly? EndDate, int Price, string Description, string Tag, long AuthorId, long? ExecutorId, int StatusId)
+        public TaskModel(long id, string Head, DateOnly Deadline, DateOnly? EndDate, int Price, string Description, string Tag, long AuthorId, long? ExecutorId, int StatusId)
         {
             Id = id;
             this.Head = Head;
