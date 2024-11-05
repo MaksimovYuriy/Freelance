@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 
 namespace FreelanceDB.Database.Entities;
@@ -29,13 +30,17 @@ public partial class User
 
     public virtual ICollection<Task> TaskExecutors { get; set; } = new List<Task>();
 
-    internal User(string login, string passwordhash, string nickname, string? atoken, string? rtoken)
+
+    internal User(string login, string passwordhash, string nickname, string ? atoken, string ? rtoken, int balance=0, int freeze=0, long id = 0)
     {
+        Id = id;
         Login = login;
         PasswordHash = passwordhash;
         Nickname = nickname;
         AToken = atoken;
         RToken = rtoken;
+        Balance = balance;
+        FreezeBalance = freeze;
     }
     
     internal User()
