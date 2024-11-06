@@ -1,4 +1,5 @@
-﻿using FreelanceDB.Database.Repositories;
+﻿using FreelanceDB.Contracts;
+using FreelanceDB.Database.Repositories;
 using FreelanceDB.Models;
 
 namespace FreelanceDB.Abstractions.Services
@@ -7,12 +8,14 @@ namespace FreelanceDB.Abstractions.Services
     {
         Task<bool> ChekUser(string login);
 
-        Task<long> CreateUser(UserModel user);
+        Task<long> CreateUser(UserRequest user);
 
         Task<bool> DeleteUser(long id);
 
         Task<UserModel> GetUser(string login, string passwordhash);
 
         Task<UserModel> GetUser(long id);
+
+        string GetPasHash(string password);
     }
 }

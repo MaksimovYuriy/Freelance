@@ -1,4 +1,5 @@
 ﻿using FreelanceDB.Abstractions;
+using FreelanceDB.Contracts;
 using FreelanceDB.Database.Context;
 using FreelanceDB.Database.Entities;
 using FreelanceDB.Models;
@@ -25,25 +26,23 @@ namespace FreelanceDB.Database.Repositories
             else return true;
         }
 
-        public async Task<long> Create(UserModel user)
+        public async Task<long> Create(User user)
         {
-            string atoken = "atoken";//заглушка пока не готова автормзация
-            string rtoken = "rtoken";
-            User newuser = new User(user.Login, user.PasswordHash, user.Nickname, atoken, rtoken);
-            await _context.Users.AddAsync(newuser);
+           
+          //обработать ошибку создания
+            await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
-           var us = await _context.Users.FirstAsync(l => user.Login == l.Login && user.PasswordHash == l.PasswordHash);
+            var us = await _context.Users.FirstAsync(l => user.Login == l.Login && user.PasswordHash == l.PasswordHash);
             return us.Id;
 
         }
 
         public async Task<bool> Delete(long id)
         {
-            UserModel model = await this.Get(id);
-            var user = Converter(model);
+            var user = await _context.Users.FindAsync(id);
 
-            if(user == null)
+            if (user == null)
             {
                 return false;
             }
@@ -63,7 +62,7 @@ namespace FreelanceDB.Database.Repositories
             }
             else
             {
-                UserModel user1 = new UserModel(user.Id, user.Login, user.PasswordHash, user.Nickname, user.AToken, user.RToken, user.Balance, user.FreezeBalance);
+                UserModel user1 = Converter(user);
                 return user1;
             }
 
@@ -79,7 +78,7 @@ namespace FreelanceDB.Database.Repositories
             }
             else
             {
-                UserModel user1 = new UserModel(user.Id, user.Login, user.PasswordHash, user.Nickname, user.AToken, user.RToken, user.Balance, user.FreezeBalance);
+                UserModel user1 = Converter(user);
                 return user1;
             }
         }

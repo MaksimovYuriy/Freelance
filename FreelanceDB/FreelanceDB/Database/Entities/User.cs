@@ -42,7 +42,12 @@ public partial class User
         Balance = balance;
         FreezeBalance = freeze;
     }
-    
+    internal User(string login, string passwordhash, string nickname)
+    {
+        Login = login; 
+        PasswordHash = passwordhash;
+        Nickname = nickname;
+    }
     internal User()
     {
 
