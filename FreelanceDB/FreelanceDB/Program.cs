@@ -1,6 +1,11 @@
+using FreelanceDB.Abstractions;
+using FreelanceDB.Abstractions.Services;
 using FreelanceDB.Database.Context;
+using FreelanceDB.Database.Repositories;
+using FreelanceDB.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +15,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddTransient<IResumeRepository, ResumeRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IUserService, UserService>();
+
 
 builder.Services.AddDbContext<FreelanceDbContext>();
 
@@ -33,5 +43,6 @@ app.UseCors("Default");
 app.UseAuthorization();
 app.MapControllers();
 
-app.Run();
 
+
+app.Run();

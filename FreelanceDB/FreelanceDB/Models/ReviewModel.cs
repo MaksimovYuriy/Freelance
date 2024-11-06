@@ -22,5 +22,7 @@ namespace FreelanceDB.Models
             this.AuthorId = AuthorId;
             this.RecipientId = RecipientId;
         }
+
+        public ReviewModel() { }
     }
 }
