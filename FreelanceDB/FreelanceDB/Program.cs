@@ -1,5 +1,6 @@
 using FreelanceDB.Abstractions;
 using FreelanceDB.Abstractions.Services;
+using FreelanceDB.Authentication;
 using FreelanceDB.Database.Context;
 using FreelanceDB.Database.Repositories;
 using FreelanceDB.Services;
@@ -19,6 +20,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IResumeRepository, ResumeRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<ITokenService, TokenService>();
 
 
 builder.Services.AddDbContext<FreelanceDbContext>();
