@@ -1,4 +1,4 @@
-﻿using FreelanceDB.Contracts;
+﻿using FreelanceDB.Contracts.Requests;
 using FreelanceDB.Database.Repositories;
 using FreelanceDB.Models;
 

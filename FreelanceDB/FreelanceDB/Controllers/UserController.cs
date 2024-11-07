@@ -1,5 +1,6 @@
 ﻿using FreelanceDB.Abstractions.Services;
-using FreelanceDB.Contracts;
+using FreelanceDB.Contracts.Requests;
+using FreelanceDB.Contracts.Responses;
 using FreelanceDB.Database.Entities;
 using Microsoft.AspNetCore.Mvc;
 

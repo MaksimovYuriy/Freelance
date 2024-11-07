@@ -1,4 +1,4 @@
-﻿namespace FreelanceDB.Contracts
+﻿namespace FreelanceDB.Contracts.Responses
 {
     public record UserResponse
     (

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace FreelanceDB.Database.Entities;
 
-public partial class User
+public partial class User//TODO: роли, бан, время истечения срока действия токена
 {
     public long Id { get; set; }
 
@@ -13,6 +13,8 @@ public partial class User
     public string PasswordHash { get; set; } = null!;
 
     public string Nickname { get; set; } = null!;
+
+    //public string Role { get; set; }   
 
     public string? AToken { get; set; }
 

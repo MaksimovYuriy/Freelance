@@ -1,6 +1,6 @@
 ﻿namespace FreelanceDB.Models
 {
-    public class UserModel
+    public class UserModel//TODO: роли, бан
     {
         public long Id { get; set; }
 
@@ -9,6 +9,8 @@
         public string PasswordHash { get; set; } = null!;
 
         public string Nickname { get; set; } = null!;
+
+        public string Role { get; set; }
 
         public string? AToken { get; set; }
 

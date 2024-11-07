@@ -21,8 +21,6 @@ builder.Services.AddTransient<IResumeRepository, ResumeRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
-
-
 builder.Services.AddDbContext<FreelanceDbContext>();
 
 builder.Services.AddCors(option => option.AddPolicy(

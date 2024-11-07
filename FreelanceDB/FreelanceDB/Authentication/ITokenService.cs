@@ -1,4 +1,5 @@
 ﻿using FreelanceDB.Models;
+using System.Security.Claims;
 
 namespace FreelanceDB.Authentication
 {
@@ -6,5 +7,7 @@ namespace FreelanceDB.Authentication
     {
         string GenerateAccessToken(UserModel user);
         string GenerateRefreshToken();
+        ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+
     }
 }
