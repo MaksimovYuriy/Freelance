@@ -8,7 +8,7 @@ namespace FreelanceDB.Abstractions.Services
     {
         Task<bool> ChekUser(string login);
 
-        Task<long> CreateUser(UserRequest user);
+        Task<long> CreateUser(SignUpRequest user);
 
         Task<bool> DeleteUser(long id);
 

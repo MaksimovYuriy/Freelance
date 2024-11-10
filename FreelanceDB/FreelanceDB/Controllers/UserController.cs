@@ -24,7 +24,7 @@ namespace FreelanceDB.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<long>> CreateUser([FromBody] UserRequest request)
+        public async Task<ActionResult<long>> CreateUser([FromBody] SignUpRequest request)
         {
 
             return await service.CreateUser(request);
@@ -37,11 +37,11 @@ namespace FreelanceDB.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<UserResponse>> GetUserByLogin(string login, string password)
+        public async Task<ActionResult<UserResponse>> GetUserByLogin([FromBody] LoginRequest request)
         {
-            var user = await service.GetUser(login, password);
+            var user = await service.GetUser(request.login, request.password);
             //конверация в userresponse
-            var response = new UserResponse(user.Id, user.Nickname, user.AToken, user.RToken);
+            var response = new UserResponse(user.Id, user.Nickname, user.AToken, user.RToken);//создать токены
 
             return Ok(response);
         }

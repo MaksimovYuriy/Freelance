@@ -14,7 +14,9 @@ public partial class User//TODO: роли, бан, время истечения
 
     public string Nickname { get; set; } = null!;
 
-    //public string Role { get; set; }   
+    public long RoleId { get; set; }   
+
+    public DateTime RefreshTokenExpiryTime { get; set; }
 
     public string? AToken { get; set; }
 
@@ -23,6 +25,8 @@ public partial class User//TODO: роли, бан, время истечения
     public int Balance { get; set; }
 
     public int FreezeBalance { get; set; }
+
+   // public virtual Role? Role { get; set; }
 
     public virtual ICollection<Review> ReviewAuthors { get; set; } = new List<Review>();
 
@@ -33,7 +37,7 @@ public partial class User//TODO: роли, бан, время истечения
     public virtual ICollection<Task> TaskExecutors { get; set; } = new List<Task>();
 
 
-    internal User(string login, string passwordhash, string nickname, string ? atoken, string ? rtoken, int balance=0, int freeze=0, long id = 0)
+    internal User(string login, string passwordhash ,string nickname, string ? atoken, string ? rtoken, DateTime refreshExpiry, int balance=0, int freeze=0, long id = 0, long role = 1)
     {
         Id = id;
         Login = login;
@@ -43,12 +47,15 @@ public partial class User//TODO: роли, бан, время истечения
         RToken = rtoken;
         Balance = balance;
         FreezeBalance = freeze;
+        RoleId = role;
+        RefreshTokenExpiryTime = refreshExpiry;
     }
-    internal User(string login, string passwordhash, string nickname)
+    internal User(string login, string passwordhash, string nickname, long role)
     {
         Login = login; 
         PasswordHash = passwordhash;
         Nickname = nickname;
+        RoleId = role;
     }
     internal User()
     {

@@ -1,21 +1,22 @@
-﻿using FreelanceDB.Models;
+﻿using FreelanceDB.Database.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace FreelanceDB.Authentication
 {
     public class TokenService : ITokenService
     {
-        public string GenerateAccessToken(UserModel user)
+        public string GenerateAccessToken(long id, string role)
         {
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Role, user.Role)
+                    new Claim(ClaimTypes.NameIdentifier, id.ToString()),
+                    new Claim(ClaimTypes.Role,role)
                 }),
                 Issuer = AuthOptions.Issuer,
                 Audience = AuthOptions.Audience,
@@ -36,14 +37,34 @@ namespace FreelanceDB.Authentication
             using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber) + "_" + DateTime.UtcNow.AddDays(AuthOptions.RefreshTokenExpirationTime).ToString("yyyy-MM-ddTHH:mm:ssZ");
+                return Convert.ToBase64String(randomNumber);
             }
         }
     
 
         public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
         {
-            throw new NotImplementedException();
+            var parameters = new TokenValidationParameters
+            {
+                ValidateAudience = true,
+                ValidateIssuer = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AuthOptions.GetSymmetricSecurityKey().ToString())),
+                ValidateLifetime = true
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken securityToken;
+            var principal = tokenHandler.ValidateToken(token, parameters, out securityToken);
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+            return principal;
+        }
+
+        public DateTime GetRefreshTokenExpireTime()
+        {
+            return DateTime.UtcNow.AddDays(2);
         }
     }
 }

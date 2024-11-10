@@ -9,6 +9,8 @@ namespace FreelanceDB.Abstractions
         Task<UserModel> Get(long id);
         Task<long> Create(User user);
         Task<bool> CheckUser(string login);
-        Task<bool> Delete(long id);    
+        Task<bool> Delete(long id);
+        Task<long> AddTokens(long id, string RToken, string AToken, DateTime expiry);
+        Task<long> ChangeRole(long id, long role);
     }
 }
