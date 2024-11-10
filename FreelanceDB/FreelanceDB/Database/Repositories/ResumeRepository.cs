@@ -15,7 +15,7 @@ namespace FreelanceDB.Database.Repositories
             _context = context;
         }
 
-        public async Task<long> CreateResume(ResumeModel resume)
+        public async Task<long> CreateResume(ResumeModel resume, long userId)
         {
             Resume newResume = new Resume()
             {
@@ -30,7 +30,14 @@ namespace FreelanceDB.Database.Repositories
             await _context.Resumes.AddAsync(newResume);
             await _context.SaveChangesAsync();
 
-            return newResume.Id;
+            UserResume userResume = new UserResume();
+            userResume.UserId = userId;
+            userResume.ResumeId = newResume.Id;
+
+            await _context.UserResumes.AddAsync(userResume);
+            await _context.SaveChangesAsync();
+
+            return resume.Id;
         }
 
         public async Task<long> DeleteResume(long id)
@@ -42,7 +49,47 @@ namespace FreelanceDB.Database.Repositories
                 throw new Exception("Unknown resume.id");
             }
 
+            status = await _context.UserResumes.Where(p => p.ResumeId == id).ExecuteDeleteAsync();
+
+            if (status == 0)
+            {
+                throw new Exception("Unknown resume.id");
+            }
+
             return id;
+        }
+
+        public async Task<List<ResumeModel>> GetAllResumes(long userId)
+        {
+            var resumes = await _context.UserResumes.Where(p =>
+            p.UserId == userId).ToListAsync();
+
+            List<ResumeModel> models = new List<ResumeModel>();
+
+            foreach(var resume in resumes)
+            {
+                Resume? entity = await _context.Resumes.FirstOrDefaultAsync(p => p.Id == resume.ResumeId);
+
+                if(entity == null)
+                {
+                    throw new Exception("Undefined resume");
+                }
+
+                ResumeModel resumeModel = new ResumeModel()
+                {
+                    Id = entity.Id,
+                    Head = entity.Head,
+                    WorkExp = entity.WorkExp,
+                    Skills = entity.Skills,
+                    Education = entity.Education,
+                    AboutMe = entity.AboutMe,
+                    Contacts = entity.Contacts
+                };
+
+                models.Add(resumeModel);
+            }
+
+            return models;
         }
 
         public async Task<ResumeModel> GetResume(long id)

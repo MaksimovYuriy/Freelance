@@ -6,8 +6,9 @@ namespace FreelanceDB.Abstractions
     public interface IResumeRepository
     {
         Task<ResumeModel> GetResume(long id);
-        Task<long> CreateResume(ResumeModel resume);
+        Task<long> CreateResume(ResumeModel resume, long userId);
         Task<long> DeleteResume(long id);
         Task<long> UpdateResume(long id, ResumeModel newResume);
+        Task<List<ResumeModel>> GetAllResumes(long userId);
     }
 }
