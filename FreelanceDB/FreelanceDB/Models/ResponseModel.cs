@@ -17,7 +17,7 @@ namespace FreelanceDB.Models
             this.TaskId = TaskId;
             this.UserId = UserId;
         }
-    }
 
-    
+        public ResponseModel() { }
+    }
 }
