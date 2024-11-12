@@ -29,11 +29,11 @@ namespace FreelanceDB.Database.Repositories
             return status;
         }
 
-        public async Task<long> CreateResponse(TaskModel task, long userId)
+        public async Task<long> CreateResponse(long taskId, long userId)
         {
             Response responseEntity = new Response();
             responseEntity.UserId = userId;
-            responseEntity.TaskId = task.Id;
+            responseEntity.TaskId = taskId;
 
             await _context.Responses.AddAsync(responseEntity);
             await _context.SaveChangesAsync();
