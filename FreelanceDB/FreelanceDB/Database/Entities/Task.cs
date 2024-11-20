@@ -17,7 +17,7 @@ public partial class Task
 
     public string Description { get; set; } = null!;
 
-    public string Tag { get; set; } = null!;
+    public string Tag { get; set; } = null!;//в отдельную таблицу
 
     public long AuthorId { get; set; }
 

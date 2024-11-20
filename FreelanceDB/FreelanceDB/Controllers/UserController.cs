@@ -18,22 +18,23 @@ namespace FreelanceDB.Controllers
         }
 
         [HttpGet]
+        //используется при регистрации для проверки уникальности логина
         public async Task<ActionResult<bool>> ChekUser(string login)
         {
-            return await service.ChekUser(login);
+            return Ok(await service.ChekUser(login));
         }
 
         [HttpPost]
         public async Task<ActionResult<long>> CreateUser([FromBody] SignUpRequest request)
         {
 
-            return await service.CreateUser(request);
+            return Ok(await service.CreateUser(request));
         }
 
         [HttpDelete]
         public async Task<ActionResult<bool>> DeleteUser(long id)
         {
-            return await service.DeleteUser(id);
+            return Ok(await service.DeleteUser(id));
         }
 
         [HttpGet]
