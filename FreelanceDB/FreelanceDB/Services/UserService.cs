@@ -1,6 +1,6 @@
 ﻿using FreelanceDB.Abstractions.Repository;
 using FreelanceDB.Abstractions.Services;
-using FreelanceDB.Authentication;
+using FreelanceDB.Authentication.Abstractions;
 using FreelanceDB.Contracts.Requests;
 using FreelanceDB.Database.Entities;
 using FreelanceDB.Models;

@@ -1,7 +1,7 @@
 ﻿using FreelanceDB.Database.Entities;
 using System.Security.Claims;
 
-namespace FreelanceDB.Authentication
+namespace FreelanceDB.Authentication.Abstractions
 {
     public interface ITokenService
     {
