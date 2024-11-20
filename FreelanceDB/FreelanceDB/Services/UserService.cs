@@ -25,7 +25,14 @@ namespace FreelanceDB.Services
         public async Task<long> CreateUser(SignUpRequest user)
         {
             //хэширование пароля
-            User user1 = new User(user.Login, user.password, user.Name, 1);
+            
+            User user1 = new User
+            {
+                Login = user.Login,
+                PasswordHash = user.password,
+                Nickname = user.Name,
+                RoleId = 1
+            };
             long id = await _userRepository.Create(user1);
             await _userRepository.AddTokens(id, _tokenService.GenerateRefreshToken(), _tokenService.GenerateAccessToken(id, "user"), _tokenService.GetRefreshTokenExpireTime());//заменить на айди ролей когда сделаю роли
 

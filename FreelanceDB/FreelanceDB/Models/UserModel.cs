@@ -10,7 +10,7 @@
 
         public string Nickname { get; set; } = null!;
 
-        public long Role { get; set; }//id роли
+        public long RoleId { get; set; }//id роли
 
         public string? AToken { get; set; }
 
@@ -33,7 +33,7 @@
             Balance = balance;
             FreezeBalance = freezeBalance;
             RefreshTokenExpiryTime = refreshTokenExpiryTime;
-            Role = role;    
+            RoleId = role;    
         }
         internal UserModel() { }
     }

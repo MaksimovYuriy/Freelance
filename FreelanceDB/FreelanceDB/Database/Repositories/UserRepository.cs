@@ -107,9 +107,21 @@ namespace FreelanceDB.Database.Repositories
         {
             return new UserModel(user.Id, user.Login, user.PasswordHash, user.Nickname, user.AToken, user.RToken, user.Balance, user.FreezeBalance, user.RoleId, user.RefreshTokenExpiryTime);
         }
-        private User Converter(UserModel model) 
-        {
-            return new User(model.Login, model.PasswordHash, model.Nickname, model.AToken, model.RToken, model.RefreshTokenExpiryTime, model.Balance, model.FreezeBalance, model.Id, model.Role);
-        }
+        //private User Converter(UserModel model) 
+        //{
+        //    return new User
+        //    {
+        //        Id = model.Id,
+        //        Login = model.Login,
+        //        PasswordHash = model.PasswordHash,
+        //        Nickname = model.Nickname,
+        //        AToken = model.AToken,
+        //        RToken = model.RToken,
+        //        RefreshTokenExpiryTime = model.RefreshTokenExpiryTime,
+        //        RoleId = model.RoleId,
+        //        Balance = model.Balance,
+        //        FreezeBalance = model.FreezeBalance
+        //    };
+        //}
     }
 }
