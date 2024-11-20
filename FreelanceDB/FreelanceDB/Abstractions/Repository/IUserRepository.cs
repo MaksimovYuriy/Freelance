@@ -1,7 +1,7 @@
 ﻿using FreelanceDB.Database.Entities;
 using FreelanceDB.Models;
 
-namespace FreelanceDB.Abstractions
+namespace FreelanceDB.Abstractions.Repository
 {
     public interface IUserRepository
     {

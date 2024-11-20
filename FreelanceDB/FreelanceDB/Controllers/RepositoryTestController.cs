@@ -1,4 +1,4 @@
-﻿using FreelanceDB.Abstractions;
+﻿using FreelanceDB.Abstractions.Repository;
 using FreelanceDB.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

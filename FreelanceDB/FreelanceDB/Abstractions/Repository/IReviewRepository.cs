@@ -1,6 +1,6 @@
 ﻿using FreelanceDB.Models;
 
-namespace FreelanceDB.Abstractions
+namespace FreelanceDB.Abstractions.Repository
 {
     public interface IReviewRepository
     {

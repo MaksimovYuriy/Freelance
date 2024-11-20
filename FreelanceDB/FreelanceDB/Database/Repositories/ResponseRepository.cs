@@ -1,4 +1,4 @@
-﻿using FreelanceDB.Abstractions;
+﻿using FreelanceDB.Abstractions.Repository;
 using FreelanceDB.Database.Context;
 using FreelanceDB.Database.Entities;
 using FreelanceDB.Models;

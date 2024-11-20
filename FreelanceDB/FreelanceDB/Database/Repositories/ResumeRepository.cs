@@ -1,8 +1,8 @@
-﻿using FreelanceDB.Abstractions;
-using FreelanceDB.Models;
+﻿using FreelanceDB.Models;
 using FreelanceDB.Database.Entities;
 using FreelanceDB.Database.Context;
 using Microsoft.EntityFrameworkCore;
+using FreelanceDB.Abstractions.Repository;
 
 namespace FreelanceDB.Database.Repositories
 {
