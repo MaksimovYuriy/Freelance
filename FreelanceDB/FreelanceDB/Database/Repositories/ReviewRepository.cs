@@ -59,6 +59,8 @@ namespace FreelanceDB.Database.Repositories
                     AuthorId = review.AuthorId,
                     RecipientId = review.RecipientId
                 };
+
+                reviews_list.Add(model);
             }
 
             return reviews_list;
