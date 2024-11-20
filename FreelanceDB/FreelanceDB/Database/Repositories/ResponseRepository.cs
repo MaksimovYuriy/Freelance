@@ -8,9 +8,9 @@ namespace FreelanceDB.Database.Repositories
 {
     public class ResponseRepository : IResponseRepository
     {
-        private readonly FreelanceDbContext _context;
+        private readonly FreelancedbContext _context;
 
-        public ResponseRepository(FreelanceDbContext context)
+        public ResponseRepository(FreelancedbContext context)
         {
             _context = context;
         }

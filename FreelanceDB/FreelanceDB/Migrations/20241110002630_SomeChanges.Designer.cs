@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FreelanceDB.Migrations
 {
-    [DbContext(typeof(FreelanceDbContext))]
+    [DbContext(typeof(FreelancedbContext))]
     [Migration("20241110002630_SomeChanges")]
     partial class SomeChanges
     {

@@ -18,4 +18,8 @@ public partial class Resume
     public string? AboutMe { get; set; }
 
     public string? Contacts { get; set; }
+
+    public long UserId { get; set; }
+
+    public virtual User User { get; set; } = null!;
 }

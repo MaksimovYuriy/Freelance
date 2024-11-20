@@ -8,9 +8,9 @@ namespace FreelanceDB.Database.Repositories
 {
     public class ResumeRepository : IResumeRepository
     {
-        private readonly FreelanceDbContext _context;
+        private readonly FreelancedbContext _context;
 
-        public ResumeRepository(FreelanceDbContext context)
+        public ResumeRepository(FreelancedbContext context)
         {
             _context = context;
         }
@@ -34,9 +34,6 @@ namespace FreelanceDB.Database.Repositories
             userResume.UserId = userId;
             userResume.ResumeId = newResume.Id;
 
-            await _context.UserResumes.AddAsync(userResume);
-            await _context.SaveChangesAsync();
-
             return resume.Id;
         }
 
@@ -49,41 +46,27 @@ namespace FreelanceDB.Database.Repositories
                 throw new Exception("Unknown resume.id");
             }
 
-            status = await _context.UserResumes.Where(p => p.ResumeId == id).ExecuteDeleteAsync();
-
-            if (status == 0)
-            {
-                throw new Exception("Unknown resume.id");
-            }
-
             return id;
         }
 
         public async Task<List<ResumeModel>> GetAllResumes(long userId)
         {
-            var resumes = await _context.UserResumes.Where(p =>
+            var resumes = await _context.Resumes.Where(p =>
             p.UserId == userId).ToListAsync();
 
             List<ResumeModel> models = new List<ResumeModel>();
 
             foreach(var resume in resumes)
             {
-                Resume? entity = await _context.Resumes.FirstOrDefaultAsync(p => p.Id == resume.ResumeId);
-
-                if(entity == null)
-                {
-                    throw new Exception("Undefined resume");
-                }
-
                 ResumeModel resumeModel = new ResumeModel()
                 {
-                    Id = entity.Id,
-                    Head = entity.Head,
-                    WorkExp = entity.WorkExp,
-                    Skills = entity.Skills,
-                    Education = entity.Education,
-                    AboutMe = entity.AboutMe,
-                    Contacts = entity.Contacts
+                    Id = resume.Id,
+                    Head = resume.Head,
+                    WorkExp = resume.WorkExp,
+                    Skills = resume.Skills,
+                    Education = resume.Education,
+                    AboutMe = resume.AboutMe,
+                    Contacts = resume.Contacts
                 };
 
                 models.Add(resumeModel);

@@ -8,9 +8,9 @@ namespace FreelanceDB.Database.Repositories
 {
     public class ReviewRepository : IReviewRepository
     {
-        private readonly FreelanceDbContext _context;
+        private readonly FreelancedbContext _context;
 
-        public ReviewRepository(FreelanceDbContext context)
+        public ReviewRepository(FreelancedbContext context)
         {
             _context = context;
         }

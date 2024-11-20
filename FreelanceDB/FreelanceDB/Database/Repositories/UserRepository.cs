@@ -10,8 +10,8 @@ namespace FreelanceDB.Database.Repositories
 {
     public class UserRepository :IUserRepository
     {
-        private readonly FreelanceDbContext _context;
-        public UserRepository(FreelanceDbContext context)
+        private readonly FreelancedbContext _context;
+        public UserRepository(FreelancedbContext context)
         {
             _context = context;
         }

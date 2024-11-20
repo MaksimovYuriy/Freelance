@@ -16,8 +16,6 @@ namespace FreelanceDB.Models
 
         public string Description { get; set; } = null!;
 
-        public string Tag { get; set; } = null!;
-
         public long AuthorId { get; set; }
 
         public long? ExecutorId { get; set; }
@@ -32,7 +30,6 @@ namespace FreelanceDB.Models
             this.EndDate = EndDate;
             this.Price = Price;
             this.Description = Description;
-            this.Tag = Tag;
             this.AuthorId = AuthorId;
             this.StatusId = StatusId;
         }

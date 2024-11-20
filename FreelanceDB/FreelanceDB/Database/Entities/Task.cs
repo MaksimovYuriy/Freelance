@@ -17,8 +17,6 @@ public partial class Task
 
     public string Description { get; set; } = null!;
 
-    public string Tag { get; set; } = null!;//в отдельную таблицу
-
     public long AuthorId { get; set; }
 
     public long? ExecutorId { get; set; }
@@ -30,4 +28,6 @@ public partial class Task
     public virtual User? Executor { get; set; }
 
     public virtual Status Status { get; set; } = null!;
+
+    public virtual ICollection<TaskTag> TaskTags { get; set; } = new List<TaskTag>();
 }

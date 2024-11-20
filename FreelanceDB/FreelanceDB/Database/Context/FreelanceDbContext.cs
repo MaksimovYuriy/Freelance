@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using FreelanceDB.Database.Entities;
 using Microsoft.EntityFrameworkCore;
+using FreelanceDB.Database.Entities;
 
 namespace FreelanceDB.Database.Context;
 
-public partial class FreelanceDbContext : DbContext
+public partial class FreelancedbContext : DbContext
 {
-    public FreelanceDbContext()
+    public FreelancedbContext()
     {
     }
 
-    public FreelanceDbContext(DbContextOptions<FreelanceDbContext> options)
+    public FreelancedbContext(DbContextOptions<FreelancedbContext> options)
         : base(options)
     {
     }
@@ -22,18 +22,20 @@ public partial class FreelanceDbContext : DbContext
 
     public virtual DbSet<Review> Reviews { get; set; }
 
+    public virtual DbSet<Role> Roles { get; set; }
+
     public virtual DbSet<Status> Statuses { get; set; }
+
+    public virtual DbSet<Tag> Tags { get; set; }
 
     public virtual DbSet<Entities.Task> Tasks { get; set; }
 
+    public virtual DbSet<TaskTag> TaskTags { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
-    public virtual DbSet<UserResume> UserResumes { get; set; }
-
-    //public virtual DbSet<Role> Roles { get; set; } решить проблему с добавлением миграции
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Freelancedb;Username=developer;Password=developer");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -42,9 +44,14 @@ public partial class FreelanceDbContext : DbContext
         {
             entity.HasNoKey();
 
+            entity.HasIndex(e => e.TaskId, "IX_Responses_TaskID");
+
+            entity.HasIndex(e => e.UserId, "IX_Responses_UserID");
+
             entity.Property(e => e.Id)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("ID");
+            entity.Property(e => e.ResponseDate).HasDefaultValueSql("'-infinity'::timestamp with time zone");
             entity.Property(e => e.TaskId).HasColumnName("TaskID");
             entity.Property(e => e.UserId).HasColumnName("UserID");
 
@@ -66,6 +73,11 @@ public partial class FreelanceDbContext : DbContext
             entity.ToTable("Resume");
 
             entity.Property(e => e.Id).HasColumnName("ID");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Resumes)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("Resume_UserId_fkey");
         });
 
         modelBuilder.Entity<Review>(entity =>
@@ -73,6 +85,10 @@ public partial class FreelanceDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("Review_pkey");
 
             entity.ToTable("Review");
+
+            entity.HasIndex(e => e.AuthorId, "IX_Review_AuthorID");
+
+            entity.HasIndex(e => e.RecipientId, "IX_Review_RecipientID");
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.AuthorId).HasColumnName("AuthorID");
@@ -89,6 +105,16 @@ public partial class FreelanceDbContext : DbContext
                 .HasConstraintName("Review_RecipientID_fkey");
         });
 
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("Role_pkey");
+
+            entity.ToTable("Role");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Role1).HasColumnName("Role");
+        });
+
         modelBuilder.Entity<Status>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("Status_pkey");
@@ -98,11 +124,27 @@ public partial class FreelanceDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("ID");
         });
 
+        modelBuilder.Entity<Tag>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("Tag_pkey");
+
+            entity.ToTable("Tag");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Tag1).HasColumnName("Tag");
+        });
+
         modelBuilder.Entity<Entities.Task>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("Task_pkey");
 
             entity.ToTable("Task");
+
+            entity.HasIndex(e => e.AuthorId, "IX_Task_AuthorID");
+
+            entity.HasIndex(e => e.ExecutorId, "IX_Task_ExecutorID");
+
+            entity.HasIndex(e => e.StatusId, "IX_Task_StatusID");
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.AuthorId).HasColumnName("AuthorID");
@@ -124,6 +166,25 @@ public partial class FreelanceDbContext : DbContext
                 .HasConstraintName("Task_StatusID_fkey");
         });
 
+        modelBuilder.Entity<TaskTag>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("TaskTag_pkey");
+
+            entity.ToTable("TaskTag");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+
+            entity.HasOne(d => d.Tag).WithMany(p => p.TaskTags)
+                .HasForeignKey(d => d.TagId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("TaskTag_TagId_fkey");
+
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskTags)
+                .HasForeignKey(d => d.TaskId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("TaskTag_TaskId_fkey");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("User_pkey");
@@ -135,29 +196,13 @@ public partial class FreelanceDbContext : DbContext
             entity.Property(e => e.Balance).HasDefaultValue(0);
             entity.Property(e => e.FreezeBalance).HasDefaultValue(0);
             entity.Property(e => e.RToken).HasColumnName("rToken");
-        });
+            entity.Property(e => e.RefreshTokenExpiryTime).HasDefaultValueSql("'-infinity'::timestamp with time zone");
+            entity.Property(e => e.RoleId).HasDefaultValue(0L);
 
-        modelBuilder.Entity<UserResume>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("UserResume");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("ID");
-            entity.Property(e => e.ResumeId).HasColumnName("ResumeID");
-            entity.Property(e => e.UserId).HasColumnName("UserID");
-
-            entity.HasOne(d => d.Resume).WithMany()
-                .HasForeignKey(d => d.ResumeId)
+            entity.HasOne(d => d.Role).WithMany(p => p.Users)
+                .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("UserResume_ResumeID_fkey");
-
-            entity.HasOne(d => d.User).WithMany()
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("UserResume_UserID_fkey");
+                .HasConstraintName("User_RoleId_fkey");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FreelanceDB.Migrations
 {
-    [DbContext(typeof(FreelanceDbContext))]
+    [DbContext(typeof(FreelancedbContext))]
     partial class FreelanceDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

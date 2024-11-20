@@ -7,9 +7,9 @@ namespace FreelanceDB.Database.Repositories
 {
     public class TaskRepository : ITaskRepository
     {
-        private readonly FreelanceDbContext _context;
+        private readonly FreelancedbContext _context;
 
-        public TaskRepository(FreelanceDbContext context) {
+        public TaskRepository(FreelancedbContext context) {
             _context = context;
         }
 
@@ -30,7 +30,6 @@ namespace FreelanceDB.Database.Repositories
                 EndDate = task.EndDate,
                 Price = task.Price,
                 Description = task.Description,
-                Tag = task.Tag,
                 AuthorId = task.AuthorId,
                 ExecutorId = task.ExecutorId,
                 StatusId = task.StatusId
@@ -75,7 +74,6 @@ namespace FreelanceDB.Database.Repositories
                     EndDate = task.EndDate,
                     Price = task.Price,
                     Description = task.Description,
-                    Tag = task.Tag,
                     AuthorId = task.AuthorId,
                     ExecutorId = task.ExecutorId,
                     StatusId = task.StatusId
@@ -108,7 +106,6 @@ namespace FreelanceDB.Database.Repositories
                     EndDate = task.EndDate,
                     Price = task.Price,
                     Description = task.Description,
-                    Tag = task.Tag,
                     AuthorId = task.AuthorId,
                     ExecutorId = task.ExecutorId,
                     StatusId = task.StatusId
@@ -137,7 +134,6 @@ namespace FreelanceDB.Database.Repositories
                 EndDate = taskEntity.EndDate,
                 Price = taskEntity.Price,
                 Description = taskEntity.Description,
-                Tag = taskEntity.Tag,
                 AuthorId = taskEntity.AuthorId,
                 ExecutorId = taskEntity.ExecutorId,
                 StatusId = taskEntity.StatusId
@@ -155,7 +151,6 @@ namespace FreelanceDB.Database.Repositories
                 .SetProperty(m => m.EndDate, m => task.EndDate)
                 .SetProperty(m => m.Price, m => task.Price)
                 .SetProperty(m => m.Description, m => task.Description)
-                .SetProperty(m => m.Tag, m => task.Tag)
                 .SetProperty(m => m.AuthorId, m => task.AuthorId)
                 .SetProperty(m => m.ExecutorId, m => task.ExecutorId)
                 .SetProperty(m => m.StatusId, m => task.StatusId));

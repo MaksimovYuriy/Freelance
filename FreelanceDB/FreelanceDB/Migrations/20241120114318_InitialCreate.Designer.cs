@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FreelanceDB.Migrations
 {
     [DbContext(typeof(FreelancedbContext))]
-    [Migration("20241110003907_Roles")]
-    partial class Roles
+    [Migration("20241120114318_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,9 @@ namespace FreelanceDB.Migrations
                         .HasColumnName("ID");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("ResponseDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("TaskId")
                         .HasColumnType("bigint")
@@ -115,23 +118,6 @@ namespace FreelanceDB.Migrations
                     b.HasIndex("RecipientId");
 
                     b.ToTable("Review", (string)null);
-                });
-
-            modelBuilder.Entity("FreelanceDB.Database.Entities.Role", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("FreelanceDB.Database.Entities.Status", b =>
