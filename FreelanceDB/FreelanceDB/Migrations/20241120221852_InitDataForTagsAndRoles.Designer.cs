@@ -3,6 +3,7 @@ using System;
 using FreelanceDB.Database.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FreelanceDB.Migrations
 {
     [DbContext(typeof(FreelancedbContext))]
-    partial class FreelanceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241120221852_InitDataForTagsAndRoles")]
+    partial class InitDataForTagsAndRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

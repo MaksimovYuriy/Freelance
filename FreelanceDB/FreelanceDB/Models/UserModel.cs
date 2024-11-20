@@ -8,6 +8,8 @@
 
         public string PasswordHash { get; set; } = null!;
 
+        public byte[] Salt { get; set; }
+
         public string Nickname { get; set; } = null!;
 
         public long RoleId { get; set; }//id роли
@@ -22,7 +24,7 @@
 
         public int FreezeBalance { get; set; }
 
-        public UserModel( long id, string login, string passwordHash, string nickname, string? aToken, string? rToken, int balance, int freezeBalance, long role, DateTime refreshTokenExpiryTime)
+        public UserModel( long id, string login, string passwordHash, string nickname, string? aToken, string? rToken, int balance, int freezeBalance, long role, DateTime refreshTokenExpiryTime, byte[] salt)
         {
             Id = id;
             Login = login;
@@ -34,6 +36,7 @@
             FreezeBalance = freezeBalance;
             RefreshTokenExpiryTime = refreshTokenExpiryTime;
             RoleId = role;    
+            Salt = salt;
         }
         internal UserModel() { }
     }

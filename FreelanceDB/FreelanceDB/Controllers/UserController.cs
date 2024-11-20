@@ -37,7 +37,7 @@ namespace FreelanceDB.Controllers
             return Ok(await service.DeleteUser(id));
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResult<UserResponse>> GetUserByLogin([FromBody] LoginRequest request)
         {
             var user = await service.GetUser(request.login, request.password);

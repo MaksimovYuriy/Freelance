@@ -11,10 +11,12 @@ namespace FreelanceDB.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly ITokenService _tokenService;
-        public UserService(IUserRepository repository, ITokenService service)
+        private readonly IPasswordHasher _passwordHasher;
+        public UserService(IUserRepository repository, ITokenService service, IPasswordHasher hasher)
         {
             _userRepository = repository;
             _tokenService = service;
+            _passwordHasher = hasher;
         }
 
         public async Task<bool> ChekUser(string login)
@@ -25,11 +27,13 @@ namespace FreelanceDB.Services
         public async Task<long> CreateUser(SignUpRequest user)
         {
             //хэширование пароля
+             string hash = _passwordHasher.HashPassword(user.password, out byte[] salt);
             
             User user1 = new User
             {
                 Login = user.Login,
-                PasswordHash = user.password,
+                PasswordHash = hash,
+                Salt = salt,
                 Nickname = user.Name,
                 RoleId = 1
             };
@@ -45,10 +49,24 @@ namespace FreelanceDB.Services
             return await _userRepository.Delete(id);
         }
 
-        public async Task<UserModel> GetUser(string login, string passwordhash)
+        public async Task<UserModel> GetUser(string login, string password)//login
         {
             //хэширование пароля
-            return await _userRepository.Get(login, passwordhash);
+            
+            UserModel user = await _userRepository.Get(login);
+            if (user == null)//если логин неверен
+            {
+                return new UserModel();
+            }
+            if (_passwordHasher.VerifyPassword(password, user.PasswordHash, user.Salt))//если логин и пароль верны
+            {
+                return user;
+            }
+            else//если пароль неверен
+            {
+                return new UserModel();
+            }
+            
         }
 
         public async Task<UserModel> GetUser(long id)
@@ -56,10 +74,6 @@ namespace FreelanceDB.Services
             return await _userRepository.Get(id);
         }
 
-        public string GetPasHash(string password)
-        {
-            string hash = "hash";
-            return hash;
-        }
+        
     }
 }

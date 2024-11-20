@@ -52,9 +52,9 @@ namespace FreelanceDB.Database.Repositories
             return true;
         }
 
-        public async Task<UserModel> Get(string login, string passwordhash)
+        public async Task<UserModel> Get(string login)
         {
-            User? user = await _context.Users.FirstOrDefaultAsync(r => r.Login == login && r.PasswordHash == passwordhash);
+            User? user = await _context.Users.FirstOrDefaultAsync(r => r.Login == login);
             if (user == null)
             {
                 var us = new UserModel();//если вернуло пустого юзера то в контроллере обработать
@@ -94,7 +94,7 @@ namespace FreelanceDB.Database.Repositories
             
         }
 
-        public async Task<long> ChangeRole(long id, long role)//id роли
+        public async Task<long> ChangeRole(long id, long role)//TODO вынести в контроллер
         {
             User user = await _context.Users.FindAsync(id);
             user.RoleId = role;
@@ -105,7 +105,7 @@ namespace FreelanceDB.Database.Repositories
 
         private UserModel Converter(User user)//методы конвертирующие из User в UserModel и наоборот
         {
-            return new UserModel(user.Id, user.Login, user.PasswordHash, user.Nickname, user.AToken, user.RToken, user.Balance, user.FreezeBalance, user.RoleId, user.RefreshTokenExpiryTime);
+            return new UserModel(user.Id, user.Login, user.PasswordHash, user.Nickname, user.AToken, user.RToken, user.Balance, user.FreezeBalance, user.RoleId, user.RefreshTokenExpiryTime, user.Salt);
         }
         //private User Converter(UserModel model) 
         //{

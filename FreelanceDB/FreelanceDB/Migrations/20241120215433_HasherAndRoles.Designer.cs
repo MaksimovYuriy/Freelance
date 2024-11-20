@@ -3,6 +3,7 @@ using System;
 using FreelanceDB.Database.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FreelanceDB.Migrations
 {
     [DbContext(typeof(FreelancedbContext))]
-    partial class FreelanceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241120215433_HasherAndRoles")]
+    partial class HasherAndRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,23 +145,6 @@ namespace FreelanceDB.Migrations
                         .HasName("Role_pkey");
 
                     b.ToTable("Role", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Role1 = "User"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Role1 = "Admin"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            Role1 = "Moderator"
-                        });
                 });
 
             modelBuilder.Entity("FreelanceDB.Database.Entities.Status", b =>
@@ -198,23 +184,6 @@ namespace FreelanceDB.Migrations
                         .HasName("Tag_pkey");
 
                     b.ToTable("Tag", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Tag1 = "Frontend"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Tag1 = "Backend"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            Tag1 = "UI/UX"
-                        });
                 });
 
             modelBuilder.Entity("FreelanceDB.Database.Entities.Task", b =>

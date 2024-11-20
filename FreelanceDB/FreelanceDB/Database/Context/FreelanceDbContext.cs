@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using FreelanceDB.Database.Entities;
@@ -113,6 +114,13 @@ public partial class FreelancedbContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Role1).HasColumnName("Role");
+            entity.HasData(
+                new Role[]
+                {
+                    new Role{Id=1, Role1="User"},
+                    new Role{Id=2,Role1="Admin"},
+                    new Role{Id=3,Role1="Moderator"}
+                });
         });
 
         modelBuilder.Entity<Status>(entity =>
@@ -132,6 +140,14 @@ public partial class FreelancedbContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Tag1).HasColumnName("Tag");
+            entity.HasData(
+                new Tag[]
+                {
+                    new Tag{Id=1, Tag1="Frontend"},
+                    new Tag{Id=2, Tag1="Backend"},
+                    new Tag{Id=3, Tag1="UI/UX"}
+                }
+                );
         });
 
         modelBuilder.Entity<Entities.Task>(entity =>

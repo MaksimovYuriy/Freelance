@@ -5,7 +5,7 @@ namespace FreelanceDB.Abstractions.Repository
 {
     public interface IUserRepository
     {
-        Task<UserModel> Get(string login, string passwordhash);
+        Task<UserModel> Get(string login);
         Task<UserModel> Get(long id);
         Task<long> Create(User user);
         Task<bool> CheckUser(string login);

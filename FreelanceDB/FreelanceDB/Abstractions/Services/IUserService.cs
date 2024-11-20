@@ -16,6 +16,5 @@ namespace FreelanceDB.Abstractions.Services
 
         Task<UserModel> GetUser(long id);
 
-        string GetPasHash(string password);
     }
 }

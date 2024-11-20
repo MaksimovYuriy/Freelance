@@ -11,6 +11,8 @@ public partial class User
 
     public string PasswordHash { get; set; } = null!;
 
+    public byte[] Salt {  get; set; } = null!;
+
     public string Nickname { get; set; } = null!;
 
     public string? AToken { get; set; }
