@@ -38,7 +38,7 @@ namespace FreelanceDB.Services
                 RoleId = 1
             };
             long id = await _userRepository.Create(user1);
-            await _userRepository.AddTokens(id, _tokenService.GenerateRefreshToken(), _tokenService.GenerateAccessToken(id, "user"), _tokenService.GetRefreshTokenExpireTime());//заменить на айди ролей когда сделаю роли
+            await _userRepository.AddTokens(id, _tokenService.GenerateRefreshToken(), _tokenService.GenerateAccessToken(id, user1.Role.ToString()), _tokenService.GetRefreshTokenExpireTime());
 
             return id;
         }

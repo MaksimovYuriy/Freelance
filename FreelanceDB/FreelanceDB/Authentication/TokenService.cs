@@ -10,6 +10,7 @@ namespace FreelanceDB.Authentication
 {
     public class TokenService : ITokenService
     {
+        const int RefressExpiryDays = 2;
         public string GenerateAccessToken(long id, string role)
         {
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -65,7 +66,12 @@ namespace FreelanceDB.Authentication
 
         public DateTime GetRefreshTokenExpireTime()
         {
-            return DateTime.UtcNow.AddDays(2);
+            return DateTime.UtcNow.AddDays(RefressExpiryDays);
+        }
+
+        public string RefreshAccessToken(string rtoken)
+        {
+            throw new NotImplementedException();
         }
     }
 }
