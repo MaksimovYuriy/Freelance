@@ -17,6 +17,13 @@ namespace FreelanceDB.Database.Repositories
 
         public async Task<long> AddTaskTag(long taskId, long tagId)
         {
+            TaskTag? target = await _context.TaskTags
+                .FirstOrDefaultAsync(p => p.TaskId == taskId && p.TagId == tagId);
+            if(target != null)
+            {
+                throw new Exception("This taskTag is already exists");
+            }
+
             Entities.Task? targetTask = await _context.Tasks.FirstOrDefaultAsync(p => p.Id == taskId);
             if (targetTask == null)
             {
@@ -49,6 +56,21 @@ namespace FreelanceDB.Database.Repositories
             await _context.SaveChangesAsync();
 
             return entity.Id;
+        }
+
+        public async Task<long> DeleteTaskTag(long taskId, long tagId)
+        {
+            TaskTag? target = await _context.TaskTags
+                .FirstOrDefaultAsync(p => p.TaskId == taskId && p.TagId == tagId);
+            if (target == null)
+            {
+                throw new Exception("This taskTag does not exists");
+            }
+
+            await _context.TaskTags.Where(p => p.Id == target.Id).ExecuteDeleteAsync();
+            await _context.SaveChangesAsync();
+
+            return target.Id;
         }
 
         public async Task<TagModel> GetTag(long tagId)

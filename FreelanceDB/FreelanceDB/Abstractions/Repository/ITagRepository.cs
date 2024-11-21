@@ -8,5 +8,6 @@ namespace FreelanceDB.Abstractions.Repository
         Task<long> CreateTag(string tagName);
         Task<TagModel> GetTag(long tagId);
         Task<long> AddTaskTag(long taskId, long tagId);
+        Task<long> DeleteTaskTag(long taskId, long tagId);
     }
 }

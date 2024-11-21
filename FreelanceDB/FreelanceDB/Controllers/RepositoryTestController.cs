@@ -36,5 +36,12 @@ namespace FreelanceDB.Controllers
             long taskTagId = await _tagRepository.AddTaskTag(taskId, tagId);
             return Ok(taskTagId);
         }
+
+        [HttpDelete("DeleteTaskTag")]
+        public async Task<IActionResult> DeleteTaskTag([FromQuery] long taskId, long tagId)
+        {
+            long taskTagId = await _tagRepository.DeleteTaskTag(taskId, tagId);
+            return Ok(taskTagId);
+        }
     }
 }
