@@ -20,6 +20,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IResumeRepository, ResumeRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IResponseRepository, ResponseRepository>();
+builder.Services.AddTransient<IReviewRepository, ReviewRepository>();
+builder.Services.AddTransient<ITagRepository, TagRepository>();
+builder.Services.AddTransient<ITaskRepository, TaskRepository>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddDbContext<FreelancedbContext>();

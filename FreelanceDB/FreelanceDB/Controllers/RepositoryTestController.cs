@@ -9,18 +9,32 @@ namespace FreelanceDB.Controllers
     [ApiController]
     public class RepositoryTestController : ControllerBase
     {
-        private readonly IResumeRepository _repository;
-        
-        public RepositoryTestController(IResumeRepository repository)
+        private readonly ITagRepository _tagRepository;
+
+        public RepositoryTestController(ITagRepository repository)
         {
-            _repository = repository;
+            _tagRepository = repository;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetResumeByID(long id)
+        [HttpPost("AddTag")]
+        public async Task<IActionResult> CreateTag([FromQuery] string tagName)
         {
-            ResumeModel model = await _repository.GetResume(id);
+            long newTagId = await _tagRepository.CreateTag(tagName);
+            return Ok(newTagId);
+        }
+
+        [HttpGet("GetTag")]
+        public async Task<IActionResult> GetTag([FromQuery] long tagId)
+        {
+            TagModel model = await _tagRepository.GetTag(tagId);
             return Ok(model);
+        }
+
+        [HttpPost("AddTaskTag")]
+        public async Task<IActionResult> AddTaskTag([FromQuery] long taskId, long tagId)
+        {
+            long taskTagId = await _tagRepository.AddTaskTag(taskId, tagId);
+            return Ok(taskTagId);
         }
     }
 }
