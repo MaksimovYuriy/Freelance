@@ -24,17 +24,14 @@ namespace FreelanceDB.Database.Repositories
                 Skills = resume.Skills,
                 Education = resume.Education,
                 AboutMe = resume.AboutMe,
-                Contacts = resume.Contacts
+                Contacts = resume.Contacts,
+                UserId = userId
             };
 
             await _context.Resumes.AddAsync(newResume);
             await _context.SaveChangesAsync();
 
-            UserResume userResume = new UserResume();
-            userResume.UserId = userId;
-            userResume.ResumeId = newResume.Id;
-
-            return resume.Id;
+            return newResume.Id;
         }
 
         public async Task<long> DeleteResume(long id)
