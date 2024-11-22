@@ -15,6 +15,11 @@ namespace FreelanceDB.Services
             _responseRepository = responseRepository;
         }
 
+        public Task<long> AddTaskExecutor(long taskId, long userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<long> CreateTask(TaskModel model)
         {
             throw new NotImplementedException();
@@ -25,12 +30,37 @@ namespace FreelanceDB.Services
             throw new NotImplementedException();
         }
 
+        public Task<long> DeleteTaskExecutor(long taskId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<List<TaskModel>> GetAllTasks()
         {
             throw new NotImplementedException();
         }
 
-        public Task<long> GetTaskResponses(long taskId)
+        public Task<List<TaskModel>> GetFilteredTasks(string? head, List<TagModel>? tags)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<ResponseModel>> GetMyResposes(long userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<ResponseModel>> GetTaskResponses(long taskId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<TaskModel>> GetTasksAuthor(long userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<TaskModel>> GetTasksExecutor(long userId)
         {
             throw new NotImplementedException();
         }

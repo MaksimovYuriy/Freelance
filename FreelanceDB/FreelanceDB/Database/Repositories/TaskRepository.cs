@@ -18,6 +18,8 @@ namespace FreelanceDB.Database.Repositories
             await _context.Tasks.Where(task => task.Id == taskId && task.ExecutorId == null)
                 .ExecuteUpdateAsync(task => task.SetProperty(m => m.ExecutorId, m => executorId));
 
+            await _context.SaveChangesAsync();
+
             return executorId;
         }
 
@@ -39,6 +41,16 @@ namespace FreelanceDB.Database.Repositories
             await _context.SaveChangesAsync();
 
             return entity.Id;
+        }
+
+        public async Task<long> DeleteExecutor(long taskId)
+        {
+            await _context.Tasks.Where(p => p.Id == taskId).ExecuteUpdateAsync(
+                p => p.SetProperty(m => m.ExecutorId, m => null));
+
+            await _context.SaveChangesAsync();
+
+            return taskId;
         }
 
         public async Task<long> DeleteTask(long id)

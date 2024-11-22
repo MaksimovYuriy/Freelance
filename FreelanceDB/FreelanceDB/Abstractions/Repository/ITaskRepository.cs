@@ -11,5 +11,6 @@ namespace FreelanceDB.Abstractions.Repository
         Task<long> AddExecutor(long taksId, long executorId);
         Task<long> UpdateTask(long id, TaskModel task);
         Task<long> DeleteTask(long id);
+        Task<long> DeleteExecutor(long taskId);
     }
 }
