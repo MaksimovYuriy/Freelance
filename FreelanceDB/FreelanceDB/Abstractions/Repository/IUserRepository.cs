@@ -11,6 +11,9 @@ namespace FreelanceDB.Abstractions.Repository
         Task<bool> CheckUser(string login);
         Task<bool> Delete(long id);
         Task<long> AddTokens(long id, string RToken, string AToken, DateTime expiry);
+        Task<(string, DateTime)> GetRTokenAndExpiryTime(long id);
         Task<long> ChangeRole(long id, long role);
+        Task<long> RemoveTokens(long id);
+        Task<long> UpdateUser(UserModel user);
     }
 }

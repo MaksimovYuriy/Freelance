@@ -69,11 +69,26 @@ namespace FreelanceDB.Services
             
         }
 
+        public async Task<(string, DateTime)> GetRTokenAndExpiryTime(long id)
+        {
+            var data = await _userRepository.GetRTokenAndExpiryTime(id);
+            return data;
+        }
+
         public async Task<UserModel> GetUser(long id)
         {
             return await _userRepository.Get(id);
         }
 
-        
+        public async Task<long> RemoveTokens(long id)
+        {
+            await _userRepository.RemoveTokens(id);
+            return(id);
+        }
+
+        public Task<long> UpdateUser(UserModel user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

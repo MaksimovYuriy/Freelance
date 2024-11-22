@@ -2,6 +2,7 @@ using FreelanceDB.Abstractions.Repository;
 using FreelanceDB.Abstractions.Services;
 using FreelanceDB.Authentication;
 using FreelanceDB.Authentication.Abstractions;
+using FreelanceDB.Authentication.Middleware;
 using FreelanceDB.Database.Context;
 using FreelanceDB.Database.Repositories;
 using FreelanceDB.Services;
@@ -47,6 +48,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("Default");
 app.UseAuthorization();
+//app.UseMiddleware<RefreshTokenExceptionHandler>();
 app.MapControllers();
 
 

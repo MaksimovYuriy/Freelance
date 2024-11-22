@@ -102,26 +102,50 @@ namespace FreelanceDB.Database.Repositories
             return user.Id;
         }
 
+        public async Task<(string, DateTime)> GetRTokenAndExpiryTime(long id)
+        {
+            User user = await _context.Users.FindAsync(id);
+            return (user.RToken, user.RefreshTokenExpiryTime);
+        }
+
+        public async Task<long> RemoveTokens(long id)
+        {
+            User user = await _context.Users.FindAsync(id);
+            user.AToken= null;
+            user.RToken = null;
+            user.RefreshTokenExpiryTime = default;
+            await _context.SaveChangesAsync();
+            return id;
+        }
+
+        public async Task<long> UpdateUser(UserModel user)
+        {
+            User updateUser = Converter(user);
+            await _context.SaveChangesAsync(); 
+            return updateUser.Id;
+        }
 
         private UserModel Converter(User user)//методы конвертирующие из User в UserModel и наоборот
         {
             return new UserModel(user.Id, user.Login, user.PasswordHash, user.Nickname, user.AToken, user.RToken, user.Balance, user.FreezeBalance, user.RoleId, user.RefreshTokenExpiryTime, user.Salt);
         }
-        //private User Converter(UserModel model) 
-        //{
-        //    return new User
-        //    {
-        //        Id = model.Id,
-        //        Login = model.Login,
-        //        PasswordHash = model.PasswordHash,
-        //        Nickname = model.Nickname,
-        //        AToken = model.AToken,
-        //        RToken = model.RToken,
-        //        RefreshTokenExpiryTime = model.RefreshTokenExpiryTime,
-        //        RoleId = model.RoleId,
-        //        Balance = model.Balance,
-        //        FreezeBalance = model.FreezeBalance
-        //    };
-        //}
+
+
+        private User Converter(UserModel model)
+        {
+            return new User
+            {
+                Id = model.Id,
+                Login = model.Login,
+                PasswordHash = model.PasswordHash,
+                Nickname = model.Nickname,
+                AToken = model.AToken,
+                RToken = model.RToken,
+                RefreshTokenExpiryTime = model.RefreshTokenExpiryTime,
+                RoleId = model.RoleId,
+                Balance = model.Balance,
+                FreezeBalance = model.FreezeBalance
+            };
+        }
     }
 }
