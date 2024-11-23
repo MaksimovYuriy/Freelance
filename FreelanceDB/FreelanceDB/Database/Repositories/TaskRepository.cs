@@ -15,12 +15,17 @@ namespace FreelanceDB.Database.Repositories
 
         public async Task<long> AddExecutor(long taskId, long executorId)
         {
-            await _context.Tasks.Where(task => task.Id == taskId && task.ExecutorId == null)
+            var status = await _context.Tasks.Where(task => task.Id == taskId && task.ExecutorId == null)
                 .ExecuteUpdateAsync(task => task.SetProperty(m => m.ExecutorId, m => executorId));
 
             await _context.SaveChangesAsync();
 
-            return executorId;
+            if(status != 0)
+            {
+                return status;
+            }
+
+            throw new Exception("Unknown taks.id or executor is already exist");
         }
 
         public async Task<long> CreateTask(TaskModel task)
@@ -45,12 +50,17 @@ namespace FreelanceDB.Database.Repositories
 
         public async Task<long> DeleteExecutor(long taskId)
         {
-            await _context.Tasks.Where(p => p.Id == taskId).ExecuteUpdateAsync(
+            var status = await _context.Tasks.Where(p => p.Id == taskId).ExecuteUpdateAsync(
                 p => p.SetProperty(m => m.ExecutorId, m => null));
 
             await _context.SaveChangesAsync();
 
-            return taskId;
+            if(status != 0)
+            {
+                return status;
+            }
+
+            throw new Exception("Unknown task.id");
         }
 
         public async Task<long> DeleteTask(long id)
@@ -63,6 +73,33 @@ namespace FreelanceDB.Database.Repositories
             }
 
             return id;
+        }
+
+        public async Task<List<TaskModel>> GetAllTasks()
+        {
+            var tasksEntity = await _context.Tasks.ToListAsync();
+            
+            List<TaskModel> models = new List<TaskModel>();
+
+            foreach (var task in tasksEntity)
+            {
+                TaskModel model = new TaskModel()
+                {
+                    Id = task.Id,
+                    Head = task.Head,
+                    Deadline = task.Deadline,
+                    EndDate = task.EndDate,
+                    Price = task.Price,
+                    Description = task.Description,
+                    AuthorId = task.AuthorId,
+                    ExecutorId = task.ExecutorId,
+                    StatusId = task.StatusId
+                };
+
+                models.Add(model);
+            }
+
+            return models;
         }
 
         public async Task<List<TaskModel>> GetAllTasksByAuthor(long authorId)
