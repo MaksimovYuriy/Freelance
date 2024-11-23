@@ -43,7 +43,7 @@ public partial class FreelancedbContext : DbContext
     {
         modelBuilder.Entity<Response>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => e.Id).HasName("Responses_pkey");
 
             entity.HasIndex(e => e.TaskId, "IX_Responses_TaskID");
 
