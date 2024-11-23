@@ -77,7 +77,7 @@ namespace FreelanceDB.Authentication
             return DateTime.UtcNow.AddDays(RefressExpiryDays);
         }
 
-        public async Task<string> RefreshAccessToken(long userId)
+        public async Task<string> RefreshAccessToken(long userId)//передавать сюда данные рефреш токена извне и не сохранять рефреш в методе
         {
             (string, DateTime) data = await _userService.GetRTokenAndExpiryTime(userId);
             if (data.Item2< DateTime.UtcNow)

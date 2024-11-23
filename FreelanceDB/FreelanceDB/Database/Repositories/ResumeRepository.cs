@@ -30,9 +30,9 @@ namespace FreelanceDB.Database.Repositories
             await _context.Resumes.AddAsync(newResume);
             await _context.SaveChangesAsync();
 
-            UserResume userResume = new UserResume();
-            userResume.UserId = userId;
-            userResume.ResumeId = newResume.Id;
+            //UserResume userResume = new UserResume();
+            //userResume.UserId = userId;
+            //userResume.ResumeId = newResume.Id;
 
             return resume.Id;
         }
