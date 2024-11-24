@@ -48,10 +48,12 @@ namespace FreelanceDB.Authentication
         }
     
 
-        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)//метод позволяет проверить и извлечь информацию из JWT-токена, даже если он истек, при условии, что токен был правильно подписан известным ключом подписи и содержит valid идентификационные данные
         {
             var parameters = new TokenValidationParameters
             {
+                ValidIssuer = AuthOptions.Issuer,
+                ValidAudience = AuthOptions.Audience,
                 ValidateAudience = true,
                 ValidateIssuer = true,
                 ValidateIssuerSigningKey = true,
