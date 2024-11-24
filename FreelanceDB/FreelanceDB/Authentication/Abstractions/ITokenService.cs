@@ -9,6 +9,5 @@ namespace FreelanceDB.Authentication.Abstractions
         string GenerateRefreshToken();
         ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
         DateTime GetRefreshTokenExpireTime();
-        Task<string> RefreshAccessToken(long userId);
     }
 }

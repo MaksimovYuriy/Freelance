@@ -1,6 +1,7 @@
 ﻿using FreelanceDB.Abstractions.Services;
 using FreelanceDB.Authentication.Abstractions;
 using FreelanceDB.Database.Entities;
+using FreelanceDB.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Specialized;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,12 +14,7 @@ namespace FreelanceDB.Authentication
     public class TokenService : ITokenService
     {
         const int RefressExpiryDays = 2;
-        private readonly IUserService _userService;
 
-        public TokenService(IUserService userService)
-        {
-            _userService = userService;
-        }
         public string GenerateAccessToken(long id, string role)
         {
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -75,24 +71,6 @@ namespace FreelanceDB.Authentication
         public DateTime GetRefreshTokenExpireTime()
         {
             return DateTime.UtcNow.AddDays(RefressExpiryDays);
-        }
-
-        public async Task<string> RefreshAccessToken(long userId)//передавать сюда данные рефреш токена извне и не сохранять рефреш в методе
-        {
-            (string, DateTime) data = await _userService.GetRTokenAndExpiryTime(userId);
-            if (data.Item2< DateTime.UtcNow)
-            {
-                await _userService.RemoveTokens(userId);
-                return "";
-            }
-            else
-            {
-                var user = await _userService.GetUser(userId);
-                var atoken = GenerateAccessToken(userId, user.RoleId.ToString());
-                user.AToken = atoken;
-                await  _userService.UpdateUser(user);
-                return atoken;
-            }
         }
     }
 }

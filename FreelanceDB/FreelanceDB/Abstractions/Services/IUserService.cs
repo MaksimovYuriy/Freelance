@@ -22,5 +22,7 @@ namespace FreelanceDB.Abstractions.Services
 
         Task<long> UpdateUser(UserModel user);
 
+        Task<long> UpdateUsersAToken(long id, string atoken);
+
     }
 }

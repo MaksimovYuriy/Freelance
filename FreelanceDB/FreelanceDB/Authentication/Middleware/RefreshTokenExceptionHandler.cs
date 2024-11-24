@@ -1,4 +1,6 @@
-﻿using FreelanceDB.Authentication.Abstractions;
+﻿using FreelanceDB.Abstractions.Services;
+using FreelanceDB.Authentication.Abstractions;
+using FreelanceDB.Database.Entities;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -10,15 +12,17 @@ namespace FreelanceDB.Authentication.Middleware
     public class RefreshTokenExceptionHandler : ExceptionHandlerMiddleware
     {
         private readonly ITokenService tokenService;
+        private readonly IUserService userService;
 
         private readonly RequestDelegate Next;
-        public RefreshTokenExceptionHandler(RequestDelegate next, ILoggerFactory loggerFactory, IOptions<ExceptionHandlerOptions> options, DiagnosticListener diagnosticListener, ITokenService tokenService) : base(next, loggerFactory, options, diagnosticListener)
+        public RefreshTokenExceptionHandler(RequestDelegate next, ILoggerFactory loggerFactory, IOptions<ExceptionHandlerOptions> options, DiagnosticListener diagnosticListener, ITokenService tokenService, IUserService userService) : base(next, loggerFactory, options, diagnosticListener)
         {
             this.tokenService = tokenService;
+            this.userService = userService;
             Next = next;
         }
 
-        public async new Task Invoke(HttpContext context)
+        public async new System.Threading.Tasks.Task Invoke(HttpContext context)
         {
             try
             {
@@ -39,28 +43,43 @@ namespace FreelanceDB.Authentication.Middleware
             }
         }
 
-        private async Task HandleRefreshTokenAsync(HttpContext context)
+        private async System.Threading.Tasks.Task HandleRefreshTokenAsync(HttpContext context)
         {
             // Получите токен обновления из заголовков запроса.
             string accessToken = context.Request.Headers["Authorization"];
+            string refreshToken = context.Request.Headers["Refresh-Token"];
 
             ClaimsPrincipal claims = tokenService.GetPrincipalFromExpiredToken(accessToken);
             var idclaim = claims.FindFirst(ClaimTypes.NameIdentifier);
             long id = long.Parse(idclaim.Value);
-            // Обновите токен доступа и токен обновления.
-            var newToken = await tokenService.RefreshAccessToken(id);
-            if (newToken =="") 
+            var roleClaim = claims.FindFirst(ClaimTypes.Role);
+            string role = (roleClaim.Value).ToString();
+
+            var data = await userService.GetRTokenAndExpiryTime(id);
+            var expiryTime = data.Item2;
+            var validRToken = data.Item1;
+
+            if (expiryTime <= DateTime.UtcNow)
             {
-                //отправить 401
+                userService.RemoveTokens(id);//разлогинить если истек рефреш
                 context.Response.StatusCode = 401;
-               // context.Response.Body = "{\"error\": \"Refresh token has expired\"}";
+                // context.Response.Body = "{\"error\": \"Refresh token has expired\"}";
+            }
+            else if (validRToken != refreshToken)
+            {
+                userService.RemoveTokens(id);//разлогинить если прислали не тот рефреш
+                context.Response.StatusCode = 401;
+                // context.Response.Body = "{\"error\": \"Refresh token is invalid\"}";
             }
             else
             {
+                var newToken = tokenService.GenerateAccessToken(id, role);
+                userService.UpdateUsersAToken(id, newToken);
                 // Установите новые токены в заголовки ответа.
                 context.Response.Headers.Add("Authorization", $"Bearer {newToken}");
                 context.Response.Headers.Add("RefreshToken", newToken);
 
+                //сохранить новые токены
                 // Перенаправьте запрос на исходный ресурс.
                 context.Response.StatusCode = 200;
                 await Next(context);
