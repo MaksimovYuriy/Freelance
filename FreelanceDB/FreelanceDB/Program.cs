@@ -2,7 +2,6 @@ using FreelanceDB.Abstractions.Repository;
 using FreelanceDB.Abstractions.Services;
 using FreelanceDB.Authentication;
 using FreelanceDB.Authentication.Abstractions;
-using FreelanceDB.Authentication.Middleware;
 using FreelanceDB.Database.Context;
 using FreelanceDB.Database.Repositories;
 using FreelanceDB.Services;
@@ -59,7 +58,6 @@ builder.Services.AddCors(option => option.AddPolicy(
 var app = builder.Build();
 
 
-app.UseMiddleware<RefreshTokenExceptionHandler>();
 app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
