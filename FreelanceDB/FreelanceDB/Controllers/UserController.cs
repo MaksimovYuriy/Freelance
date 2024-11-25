@@ -2,6 +2,7 @@
 using FreelanceDB.Contracts.Requests;
 using FreelanceDB.Contracts.Responses;
 using FreelanceDB.Database.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FreelanceDB.Controllers
@@ -37,6 +38,7 @@ namespace FreelanceDB.Controllers
             return Ok(await service.DeleteUser(id));
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<UserResponse>> GetUserByLogin([FromBody] LoginRequest request)
         {
@@ -47,6 +49,7 @@ namespace FreelanceDB.Controllers
             return Ok(response);
         }
 
+        
         [HttpGet]
         public async Task<ActionResult<UserResponse>> GetUserById(long id)
         {

@@ -38,7 +38,10 @@ namespace FreelanceDB.Services
                 RoleId = 1
             };
             long id = await _userRepository.Create(user1);
-            await _userRepository.AddTokens(id, _tokenService.GenerateRefreshToken(), _tokenService.GenerateAccessToken(id, user1.Role.ToString()), _tokenService.GetRefreshTokenExpireTime());
+            var rtoken = _tokenService.GenerateRefreshToken();
+            var atoken = _tokenService.GenerateAccessToken(id, user1.RoleId.ToString());
+            var time = _tokenService.GetRefreshTokenExpireTime();
+            await _userRepository.AddTokens(id, rtoken,atoken , time );
 
             return id;
         }
@@ -69,11 +72,35 @@ namespace FreelanceDB.Services
             
         }
 
+        public async Task<(string, DateTime)> GetRTokenAndExpiryTime(long id)
+        {
+            var data = await _userRepository.GetRTokenAndExpiryTime(id);
+            return data;
+        }
+
         public async Task<UserModel> GetUser(long id)
         {
             return await _userRepository.Get(id);
         }
 
-        
+        public async Task<long> RemoveTokens(long id)
+        {
+            await _userRepository.RemoveTokens(id);
+            return(id);
+        }
+
+        public async Task<long> UpdateUser(UserModel user)
+        {
+            await _userRepository.UpdateUser(user);
+            return user.Id;
+        }
+
+        public async Task<long> UpdateUsersAToken(long id, string atoken)
+        {
+            var user = await _userRepository.Get(id);
+            user.AToken = atoken;
+            await _userRepository.UpdateUser(user);
+            return id;
+        }
     }
 }

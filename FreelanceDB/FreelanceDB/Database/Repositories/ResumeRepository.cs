@@ -31,7 +31,9 @@ namespace FreelanceDB.Database.Repositories
             await _context.Resumes.AddAsync(newResume);
             await _context.SaveChangesAsync();
 
-            return newResume.Id;
+          
+
+            return resume.Id;
         }
 
         public async Task<long> DeleteResume(long id)

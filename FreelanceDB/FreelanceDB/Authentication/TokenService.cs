@@ -1,6 +1,9 @@
-﻿using FreelanceDB.Authentication.Abstractions;
+﻿using FreelanceDB.Abstractions.Services;
+using FreelanceDB.Authentication.Abstractions;
 using FreelanceDB.Database.Entities;
+using FreelanceDB.Services;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.Specialized;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -11,6 +14,7 @@ namespace FreelanceDB.Authentication
     public class TokenService : ITokenService
     {
         const int RefressExpiryDays = 2;
+
         public string GenerateAccessToken(long id, string role)
         {
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -44,10 +48,12 @@ namespace FreelanceDB.Authentication
         }
     
 
-        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)//метод позволяет проверить и извлечь информацию из JWT-токена, даже если он истек, при условии, что токен был правильно подписан известным ключом подписи и содержит valid идентификационные данные
         {
             var parameters = new TokenValidationParameters
             {
+                ValidIssuer = AuthOptions.Issuer,
+                ValidAudience = AuthOptions.Audience,
                 ValidateAudience = true,
                 ValidateIssuer = true,
                 ValidateIssuerSigningKey = true,
@@ -67,11 +73,6 @@ namespace FreelanceDB.Authentication
         public DateTime GetRefreshTokenExpireTime()
         {
             return DateTime.UtcNow.AddDays(RefressExpiryDays);
-        }
-
-        public string RefreshAccessToken(string rtoken)
-        {
-            throw new NotImplementedException();
         }
     }
 }
