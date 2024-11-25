@@ -34,7 +34,6 @@ namespace FreelanceDB.Database.Repositories
             {
                 Head = task.Head,
                 Deadline = task.Deadline,
-                EndDate = task.EndDate,
                 Price = task.Price,
                 Description = task.Description,
                 AuthorId = task.AuthorId,

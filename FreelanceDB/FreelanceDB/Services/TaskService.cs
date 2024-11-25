@@ -1,5 +1,6 @@
 ﻿using FreelanceDB.Abstractions.Repository;
 using FreelanceDB.Abstractions.Services;
+using FreelanceDB.Contracts.Requests;
 using FreelanceDB.Database.Repositories;
 using FreelanceDB.Models;
 
@@ -22,9 +23,18 @@ namespace FreelanceDB.Services
             return status;
         }
 
-        public Task<long> CreateTask(TaskModel model)
+        public Task<long> CreateTask(NewTaskRequest newTask)
         {
-            throw new NotImplementedException();
+            TaskModel model = new TaskModel();
+            model.Head = newTask.Head;
+            model.Deadline = newTask.Deadline;
+            model.Price = newTask.Price;
+            model.Description = newTask.Description;
+            model.AuthorId = newTask.AuthorId;
+            model.StatusId = newTask.StatusId;
+
+            var taskId = _taskRepository.CreateTask(model);
+            return taskId;
         }
 
         public async Task<long> CreateTaskResponse(long taskId, long userId)
@@ -64,7 +74,8 @@ namespace FreelanceDB.Services
 
         public Task<List<ResponseModel>> GetTaskResponses(long taskId)
         {
-            throw new NotImplementedException();
+            var responses = _responseRepository.GetAllResponsesByTask(taskId);
+            return responses;
         }
 
         public async Task<List<TaskModel>> GetTasksAuthor(long userId)
