@@ -18,6 +18,8 @@ namespace FreelanceDB.Models
 
         public string? Contacts { get; set; }
 
+        public long UserId { get; set; }
+
         public ResumeModel(long id, string head, string? workExp, string? skills, string? education, string? aboutMe, string? contacts)
         {
             this.Id = id;

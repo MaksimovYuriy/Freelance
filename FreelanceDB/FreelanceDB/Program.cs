@@ -31,6 +31,7 @@ builder.Services.AddTransient<ITaskRepository, TaskRepository>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
+builder.Services.AddTransient<ITaskService, TaskService>();
 builder.Services.AddDbContext<FreelancedbContext>();
 ////////builder.Services.AddExceptionHandler<RefreshTokenExceptionHandler>();
 
