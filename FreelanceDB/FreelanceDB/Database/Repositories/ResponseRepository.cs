@@ -31,14 +31,24 @@ namespace FreelanceDB.Database.Repositories
 
         public async Task<long> CreateResponse(long taskId, long userId)
         {
+            Entities.Task? task = await _context.Tasks.FirstOrDefaultAsync(p => p.Id == taskId);
+            User? user = await _context.Users.FirstOrDefaultAsync(p => p.Id == userId);
+
+            if(task == null || user == null)
+            {
+                throw new Exception("Unknown user or task");
+            }
+
             Response responseEntity = new Response();
             responseEntity.UserId = userId;
             responseEntity.TaskId = taskId;
 
+            responseEntity.ResponseDate = DateOnly.FromDateTime(DateTime.Now);
+
             await _context.Responses.AddAsync(responseEntity);
             await _context.SaveChangesAsync();
 
-            return userId;
+            return responseEntity.Id;
         }
 
         public async Task<long> DeleteResponse(long taskId, long userId)

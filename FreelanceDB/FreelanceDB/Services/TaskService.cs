@@ -27,9 +27,10 @@ namespace FreelanceDB.Services
             throw new NotImplementedException();
         }
 
-        public Task<long> CreateTaskResponse(long taskId, long userId)
+        public async Task<long> CreateTaskResponse(long taskId, long userId)
         {
-            throw new NotImplementedException();
+            long responseId = await _responseRepository.CreateResponse(taskId, userId);
+            return responseId;
         }
 
         public async Task<long> DeleteTaskExecutor(long taskId)

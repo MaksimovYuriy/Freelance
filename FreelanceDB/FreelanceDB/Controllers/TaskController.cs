@@ -2,6 +2,7 @@
 using FreelanceDB.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.InteropServices;
 
 namespace FreelanceDB.Controllers
 {
@@ -55,6 +56,13 @@ namespace FreelanceDB.Controllers
         public async Task<IActionResult> AddTaskExecutor(long taskId, long executorId)
         {
             var result = await _taskService.AddTaskExecutor(taskId, executorId);
+            return Ok(result);
+        }
+
+        [HttpPost("CreateTaskResponse")]
+        public async Task<IActionResult> CreateTaskResponse(long taskId, long userId)
+        {
+            var result = await _taskService.CreateTaskResponse(taskId, userId);
             return Ok(result);
         }
     }
