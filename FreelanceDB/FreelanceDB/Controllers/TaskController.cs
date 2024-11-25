@@ -65,5 +65,12 @@ namespace FreelanceDB.Controllers
             var result = await _taskService.CreateTaskResponse(taskId, userId);
             return Ok(result);
         }
+
+        [HttpGet("GetMyResponses")]
+        public async Task<IActionResult> GetMyResponses(long userId)
+        {
+            var result = await _taskService.GetMyResposes(userId);
+            return Ok(result);
+        }
     }
 }

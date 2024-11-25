@@ -11,6 +11,8 @@ namespace FreelanceDB.Models
 
         public long UserId { get; set; }
 
+        public DateOnly ResponseDate {  get; set; }
+
         public ResponseModel(long id, long TaskId, long UserId)
         {
             Id = id;

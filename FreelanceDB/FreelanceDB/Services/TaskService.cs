@@ -52,7 +52,8 @@ namespace FreelanceDB.Services
 
         public Task<List<ResponseModel>> GetMyResposes(long userId)
         {
-            throw new NotImplementedException();
+            var responses = _responseRepository.GetAllResponsesByUser(userId);
+            return responses;
         }
 
         public Task<TaskModel> GetTaskById(long taskId)

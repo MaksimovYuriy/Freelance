@@ -3,6 +3,7 @@ using FreelanceDB.Database.Context;
 using FreelanceDB.Database.Entities;
 using FreelanceDB.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace FreelanceDB.Database.Repositories
 {
@@ -64,7 +65,7 @@ namespace FreelanceDB.Database.Repositories
             return userId;
         }
 
-        public async Task<List<ResponseModel>> GetAllResponses(long taskId)
+        public async Task<List<ResponseModel>> GetAllResponsesByTask(long taskId)
         {
             var responses = await _context.Responses.Where(response =>
             response.TaskId == taskId).ToListAsync();
@@ -73,8 +74,30 @@ namespace FreelanceDB.Database.Repositories
             foreach(var response in responses)
             {
                 ResponseModel model = new ResponseModel();
+                model.Id = response.Id;
                 model.TaskId = response.TaskId;
                 model.UserId = response.UserId;
+                model.ResponseDate = response.ResponseDate;
+
+                models.Add(model);
+            }
+
+            return models;
+        }
+
+        public async Task<List<ResponseModel>> GetAllResponsesByUser(long userId)
+        {
+            var responses = await _context.Responses.Where(response =>
+            response.UserId == userId).ToListAsync();
+
+            List<ResponseModel> models = new List<ResponseModel>();
+            foreach (var response in responses)
+            {
+                ResponseModel model = new ResponseModel();
+                model.Id = response.Id;
+                model.TaskId = response.TaskId;
+                model.UserId = response.UserId;
+                model.ResponseDate = response.ResponseDate;
 
                 models.Add(model);
             }
