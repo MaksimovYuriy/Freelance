@@ -1,7 +1,10 @@
 ﻿using FreelanceDB.Abstractions.Services;
+using FreelanceDB.Contracts.Requests;
+using FreelanceDB.Models;
 using FreelanceDB.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.InteropServices;
 
 namespace FreelanceDB.Controllers
 {
@@ -55,6 +58,34 @@ namespace FreelanceDB.Controllers
         public async Task<IActionResult> AddTaskExecutor(long taskId, long executorId)
         {
             var result = await _taskService.AddTaskExecutor(taskId, executorId);
+            return Ok(result);
+        }
+
+        [HttpPost("CreateTaskResponse")]
+        public async Task<IActionResult> CreateTaskResponse(long taskId, long userId)
+        {
+            var result = await _taskService.CreateTaskResponse(taskId, userId);
+            return Ok(result);
+        }
+
+        [HttpGet("GetMyResponses")]
+        public async Task<IActionResult> GetMyResponses(long userId)
+        {
+            var result = await _taskService.GetMyResposes(userId);
+            return Ok(result);
+        }
+
+        [HttpGet("GetTaskResponses")]
+        public async Task<IActionResult> GetTaskResponses(long taskId)
+        {
+            var result = await _taskService.GetTaskResponses(taskId);
+            return Ok(result);
+        }
+
+        [HttpPost("CreateTask")]
+        public async Task<IActionResult> CreateTask(NewTaskRequest task)
+        {
+            var result = await _taskService.CreateTask(task);
             return Ok(result);
         }
     }
