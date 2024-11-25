@@ -7,6 +7,7 @@ using FreelanceDB.Database.Context;
 using FreelanceDB.Database.Repositories;
 using FreelanceDB.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -32,6 +33,7 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
 builder.Services.AddDbContext<FreelancedbContext>();
+////////builder.Services.AddExceptionHandler<RefreshTokenExceptionHandler>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -56,6 +58,10 @@ builder.Services.AddCors(option => option.AddPolicy(
 
 var app = builder.Build();
 
+
+app.UseMiddleware<RefreshTokenExceptionHandler>();
+app.UseAuthorization();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -64,12 +70,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseCors("Default");
-app.UseAuthorization();
-//app.UseMiddleware<RefreshTokenExceptionHandler>();
 app.MapControllers();
-
-
 
 app.Run();
