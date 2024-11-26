@@ -3,6 +3,7 @@ using FreelanceDB.Database.Context;
 using FreelanceDB.Database.Entities;
 using FreelanceDB.Models;
 using Microsoft.EntityFrameworkCore;
+using FreelanceDB.Database.Entities;
 
 namespace FreelanceDB.Database.Repositories
 {
@@ -71,6 +72,37 @@ namespace FreelanceDB.Database.Repositories
             await _context.SaveChangesAsync();
 
             return target.Id;
+        }
+
+        public async Task<List<TagModel>> GetAllTags(long taskId)
+        {
+            Entities.Task? task = await _context.Tasks.FirstOrDefaultAsync(p => p.Id == taskId);
+
+            if (task == null)
+            {
+                throw new Exception("Unknown task");
+            }
+
+            List<TagModel> result = new List<TagModel>();
+            List<TaskTag> entities = await _context.TaskTags.Where(p => p.TaskId == taskId).ToListAsync();
+
+            foreach (var entity in entities)
+            {
+                TagModel model = new TagModel();
+                Tag? tag = await _context.Tags.FirstOrDefaultAsync(p => p.Id == entity.TagId);
+
+                if (tag == null)
+                {
+                    throw new Exception("Unknown tag id");
+                }
+
+                model.Id = tag.Id;
+                model.TagName = tag.Tag1;
+
+                result.Add(model);
+            }
+
+            return result;
         }
 
         public async Task<TagModel> GetTag(long tagId)

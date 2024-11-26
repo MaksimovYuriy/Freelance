@@ -10,11 +10,14 @@ namespace FreelanceDB.Services
     {
         private readonly ITaskRepository _taskRepository;
         private readonly IResponseRepository _responseRepository;
+        private readonly ITagRepository _tagRepository;
 
-        public TaskService(ITaskRepository taskRepository, IResponseRepository responseRepository)
+        public TaskService(ITaskRepository taskRepository, 
+            IResponseRepository responseRepository, ITagRepository tagRepository)
         {
             _taskRepository = taskRepository;
             _responseRepository = responseRepository;
+            _tagRepository = tagRepository;
         }
 
         public async Task<long> AddTaskExecutor(long taskId, long userId)
@@ -54,10 +57,36 @@ namespace FreelanceDB.Services
             var tasks = await _taskRepository.GetAllTasks();
             return tasks;
         }
-
-        public Task<List<TaskModel>> GetFilteredTasks(string? head, List<TagModel>? tags)
+        
+        // Объяснение что тут происходит.
+        // Сначала сравниваем по заголовку.
+        // Далее получаем список из всех задач, которые содержат любой из указанных тэгов.
+        public async Task<List<TaskModel>> GetFilteredTasks(FilterTasksRequest filter)
         {
-            throw new NotImplementedException();
+            var allTasks = await _taskRepository.GetAllTasks();
+            if(filter.Head != null)
+            {
+                allTasks = allTasks.Where(p => p.Head.Contains(filter.Head)).ToList();
+            }
+            if(filter.Tags == null)
+            {
+                return allTasks;
+            }
+            List<TaskModel> filtered = new List<TaskModel>();
+            foreach (var task in allTasks)
+            {
+                var taskTags = await _tagRepository.GetAllTags(task.Id);
+                foreach(var needTagName in filter.Tags)
+                {
+                    TagModel? targetTag = taskTags.FirstOrDefault(p => p.TagName == needTagName);
+                    if(targetTag != null)
+                    {
+                        filtered.Add(task);
+                        break;
+                    }
+                }
+            }
+            return filtered;
         }
 
         public Task<List<ResponseModel>> GetMyResposes(long userId)

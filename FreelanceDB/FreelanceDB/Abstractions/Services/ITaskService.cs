@@ -7,7 +7,7 @@ namespace FreelanceDB.Abstractions.Services
     {
         Task<List<TaskModel>> GetAllTasks();
         Task<TaskModel> GetTaskById(long taskId);
-        Task<List<TaskModel>> GetFilteredTasks(string? head, List<TagModel>? tags);
+        Task<List<TaskModel>> GetFilteredTasks(FilterTasksRequest filter);
         Task<List<TaskModel>> GetTasksAuthor(long userId);
         Task<List<TaskModel>> GetTasksExecutor(long userId);
         Task<List<ResponseModel>> GetTaskResponses(long taskId);

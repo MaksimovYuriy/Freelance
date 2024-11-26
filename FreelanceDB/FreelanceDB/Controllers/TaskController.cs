@@ -1,4 +1,5 @@
-﻿using FreelanceDB.Abstractions.Services;
+﻿using FreelanceDB.Abstractions.Repository;
+using FreelanceDB.Abstractions.Services;
 using FreelanceDB.Contracts.Requests;
 using FreelanceDB.Models;
 using FreelanceDB.Services;
@@ -13,7 +14,6 @@ namespace FreelanceDB.Controllers
     public class TaskController : ControllerBase
     {
         private readonly ITaskService _taskService;
-
         public TaskController(ITaskService taskService)
         {
             _taskService = taskService;
@@ -86,6 +86,13 @@ namespace FreelanceDB.Controllers
         public async Task<IActionResult> CreateTask(NewTaskRequest task)
         {
             var result = await _taskService.CreateTask(task);
+            return Ok(result);
+        }
+
+        [HttpGet("GetFilteredTasks")]
+        public async Task<IActionResult> GetFilteredTask([FromQuery] FilterTasksRequest filter)
+        {
+            var result = await _taskService.GetFilteredTasks(filter);
             return Ok(result);
         }
     }

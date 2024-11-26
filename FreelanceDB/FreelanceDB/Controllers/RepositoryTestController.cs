@@ -43,5 +43,12 @@ namespace FreelanceDB.Controllers
             long taskTagId = await _tagRepository.DeleteTaskTag(taskId, tagId);
             return Ok(taskTagId);
         }
+
+        [HttpGet("GetAllTags")]
+        public async Task<IActionResult> GetAllTags(long taksId)
+        {
+            List<TagModel> models = await _tagRepository.GetAllTags(taksId);
+            return Ok(models);
+        }
     }
 }
