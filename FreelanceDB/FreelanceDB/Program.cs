@@ -5,6 +5,7 @@ using FreelanceDB.Authentication.Abstractions;
 using FreelanceDB.Authentication.Middleware;
 using FreelanceDB.Database.Context;
 using FreelanceDB.Database.Repositories;
+using FreelanceDB.Models;
 using FreelanceDB.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
@@ -15,7 +16,7 @@ using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+var redisConfig = builder.Configuration.GetSection("RedisConfiguration").Get<RedisConfiguration>();
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -32,6 +33,7 @@ builder.Services.AddTransient<ITaskRepository, TaskRepository>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
+builder.Services.AddSingleton<ILoggerProvider, LogProvider>(sp => new LogProvider(redisConfig.ConnectionString));
 builder.Services.AddTransient<ITaskService, TaskService>();
 builder.Services.AddDbContext<FreelancedbContext>();
 ////////builder.Services.AddExceptionHandler<RefreshTokenExceptionHandler>();
