@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FreelanceDB.Controllers
 {
+
+    /// <summary>
+    /// Контроллер для работы с данными из таблицы User
+    /// </summary>
     [ApiController]
     [Route("[controller]/[action]")]
     public class UserController : ControllerBase
@@ -18,13 +22,18 @@ namespace FreelanceDB.Controllers
             this.service = service;
         }
 
+        /// <summary>
+        /// Используется при регистрации для проверки уникальности логина
+        /// </summary>
         [HttpGet]
-        //используется при регистрации для проверки уникальности логина
         public async Task<ActionResult<bool>> ChekUser(string login)
         {
             return Ok(await service.ChekUser(login));
         }
 
+        /// <summary>
+        /// Создание пользователя
+        /// </summary>
         [HttpPost]
         public async Task<ActionResult<long>> CreateUser([FromBody] SignUpRequest request)
         {
@@ -32,24 +41,30 @@ namespace FreelanceDB.Controllers
             return Ok(await service.CreateUser(request));
         }
 
+        /// <summary>
+        /// Удаление пользователя
+        /// </summary>
         [HttpDelete]
         public async Task<ActionResult<bool>> DeleteUser(long id)
         {
             return Ok(await service.DeleteUser(id));
         }
 
-        [Authorize]
+        /// <summary>
+        /// Вход пользователя в систему с помощью логина и пароля
+        /// </summary>
         [HttpPost]
         public async Task<ActionResult<UserResponse>> GetUserByLogin([FromBody] LoginRequest request)
         {
             var user = await service.GetUser(request.login, request.password);
-            //конверация в userresponse
-            var response = new UserResponse(user.Id, user.Nickname, user.AToken, user.RToken);//создать токены
+            var response = new UserResponse(user.Id, user.Nickname, user.AToken, user.RToken);
 
             return Ok(response);
         }
 
-        
+        /// <summary>
+        /// Получение данных пользователя по id
+        /// </summary>
         [HttpGet]
         public async Task<ActionResult<UserResponse>> GetUserById(long id)
         {
