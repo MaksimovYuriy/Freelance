@@ -14,14 +14,17 @@ namespace FreelanceDB.Controllers
     public class TaskController : ControllerBase
     {
         private readonly ITaskService _taskService;
-        public TaskController(ITaskService taskService)
+        private readonly ILogger<TaskController> _logger;
+        public TaskController(ITaskService taskService, ILogger<TaskController> logger)
         {
             _taskService = taskService;
+            _logger = logger;
         }
 
         [HttpGet("GetAllTasks")]
         public async Task<IActionResult> GetAllTasks()
         {
+            _logger.LogInformation("Get tasks " + DateTime.Now.ToString());
             var result = await _taskService.GetAllTasks();
             return Ok(result);
         }
