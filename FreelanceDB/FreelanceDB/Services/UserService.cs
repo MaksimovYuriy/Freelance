@@ -63,6 +63,12 @@ namespace FreelanceDB.Services
             }
             if (_passwordHasher.VerifyPassword(password, user.PasswordHash, user.Salt))//если логин и пароль верны
             {
+                var atoken = _tokenService.GenerateAccessToken(user.Id, user.RoleName);
+                var rtoken = _tokenService.GenerateRefreshToken();
+                var time = _tokenService.GetRefreshTokenExpireTime();
+                user.AToken = atoken;
+                user.RToken = rtoken;
+                _userRepository.AddTokens(user.Id, rtoken,atoken , time );
                 return user;
             }
             else//если пароль неверен

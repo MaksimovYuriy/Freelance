@@ -54,7 +54,10 @@ namespace FreelanceDB.Database.Repositories
 
         public async Task<UserModel> Get(string login)
         {
-            User? user = await _context.Users.FirstOrDefaultAsync(r => r.Login == login);
+            User? user = await _context.Users
+                .Include(x => x.Role)
+                .FirstOrDefaultAsync(r => r.Login == login);
+
             if (user == null)
             {
                 var us = new UserModel();//если вернуло пустого юзера то в контроллере обработать
@@ -63,6 +66,7 @@ namespace FreelanceDB.Database.Repositories
             else
             {
                 UserModel user1 = Converter(user);
+                user1.RoleName = user.Role.Role1;
                 return user1;
             }
 

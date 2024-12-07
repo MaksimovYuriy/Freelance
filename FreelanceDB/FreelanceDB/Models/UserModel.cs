@@ -18,6 +18,8 @@
 
         public string? RToken { get; set; }
 
+        public string? RoleName { get; set; }
+
         public DateTime RefreshTokenExpiryTime { get; set; }
 
         public int Balance { get; set; }
