@@ -60,6 +60,7 @@ builder.Services.AddTransient<IReviewRepository, ReviewRepository>();
 builder.Services.AddTransient<ITagRepository, TagRepository>();
 builder.Services.AddTransient<ITaskRepository, TaskRepository>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IReviewService, ReviewService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
 builder.Services.AddSingleton<ILoggerProvider, LogProvider>(sp => new LogProvider(redisConfig.ConnectionString));

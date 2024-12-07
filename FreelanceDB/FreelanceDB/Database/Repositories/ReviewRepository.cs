@@ -1,4 +1,5 @@
 ﻿using FreelanceDB.Abstractions.Repository;
+using FreelanceDB.Contracts.Requests;
 using FreelanceDB.Database.Context;
 using FreelanceDB.Database.Entities;
 using FreelanceDB.Models;
@@ -43,9 +44,32 @@ namespace FreelanceDB.Database.Repositories
             return id;
         }
 
-        public async Task<List<ReviewModel>> GetAllReviews()
+        public async Task<List<ReviewModel>> GetAllReviewsByAuthor(long AuthorId)
         {
-            var reviews = await _context.Reviews.AsNoTracking().ToListAsync();
+            var reviews = await _context.Reviews.Where(p => p.AuthorId == AuthorId).ToListAsync();
+
+            var reviews_list = new List<ReviewModel>();
+
+            foreach (var review in reviews)
+            {
+                ReviewModel model = new ReviewModel()
+                {
+                    Id = review.Id,
+                    Description = review.Description,
+                    Rate = review.Rate,
+                    AuthorId = review.AuthorId,
+                    RecipientId = review.RecipientId
+                };
+
+                reviews_list.Add(model);
+            }
+
+            return reviews_list;
+        }
+
+        public async Task<List<ReviewModel>> GetAllReviewsByRecipient(long RecipientId)
+        {
+            var reviews = await _context.Reviews.Where(p => p.RecipientId == RecipientId).ToListAsync();
 
             var reviews_list = new List<ReviewModel>();
 
