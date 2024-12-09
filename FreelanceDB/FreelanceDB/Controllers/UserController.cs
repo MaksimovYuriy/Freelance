@@ -34,11 +34,21 @@ namespace FreelanceDB.Controllers
         /// <summary>
         /// Создание пользователя
         /// </summary>
+        /// <response code="200">Пользователь создан</response>
+        /// <response code="404">Логин занят</response>
         [HttpPost]
         public async Task<ActionResult<long>> CreateUser([FromBody] SignUpRequest request)
         {
+            var id = await service.CreateUser(request);
+            if (id == 0)
+            {
+                return BadRequest("Логин занят");
+            }
+            else
+            {
 
-            return Ok(await service.CreateUser(request));
+                return Ok(id);
+            }
         }
 
         /// <summary>

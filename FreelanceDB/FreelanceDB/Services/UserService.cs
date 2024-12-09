@@ -27,23 +27,30 @@ namespace FreelanceDB.Services
         public async Task<long> CreateUser(SignUpRequest user)
         {
             //хэширование пароля
-             string hash = _passwordHasher.HashPassword(user.password, out byte[] salt);
-            
-            User user1 = new User
+            if (await _userRepository.CheckUser(user.Login))
             {
-                Login = user.Login,
-                PasswordHash = hash,
-                Salt = salt,
-                Nickname = user.Name,
-                RoleId = 1
-            };
-            long id = await _userRepository.Create(user1);
-            var rtoken = _tokenService.GenerateRefreshToken();
-            var atoken = _tokenService.GenerateAccessToken(id, user1.RoleId.ToString());
-            var time = _tokenService.GetRefreshTokenExpireTime();
-            await _userRepository.AddTokens(id, rtoken,atoken , time );
+                return 0;
+            }
+            else
+            {
+                string hash = _passwordHasher.HashPassword(user.password, out byte[] salt);
 
-            return id;
+                User user1 = new User
+                {
+                    Login = user.Login,
+                    PasswordHash = hash,
+                    Salt = salt,
+                    Nickname = user.Name,
+                    RoleId = 1
+                };
+                long id = await _userRepository.Create(user1);
+                var rtoken = _tokenService.GenerateRefreshToken();
+                var atoken = _tokenService.GenerateAccessToken(id, user1.RoleId.ToString());
+                var time = _tokenService.GetRefreshTokenExpireTime();
+                await _userRepository.AddTokens(id, rtoken, atoken, time);
+
+                return id;
+            }
         }
 
         public async Task<bool> DeleteUser(long id)
