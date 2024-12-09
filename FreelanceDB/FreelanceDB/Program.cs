@@ -65,6 +65,7 @@ builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
 builder.Services.AddSingleton<ILoggerProvider, LogProvider>(sp => new LogProvider(redisConfig.ConnectionString));
 builder.Services.AddTransient<ITaskService, TaskService>();
+builder.Services.AddTransient<IResponseService, ResponseService>();
 builder.Services.AddDbContext<FreelancedbContext>();
 
 builder.Services.AddAuthentication(x =>

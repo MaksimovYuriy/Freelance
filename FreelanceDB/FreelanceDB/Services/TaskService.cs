@@ -40,12 +40,6 @@ namespace FreelanceDB.Services
             return taskId;
         }
 
-        public async Task<long> CreateTaskResponse(long taskId, long userId)
-        {
-            long responseId = await _responseRepository.CreateResponse(taskId, userId);
-            return responseId;
-        }
-
         public async Task<long> DeleteTaskExecutor(long taskId)
         {
             long status = await _taskRepository.DeleteExecutor(taskId);
@@ -89,22 +83,10 @@ namespace FreelanceDB.Services
             return filtered;
         }
 
-        public Task<List<ResponseModel>> GetMyResposes(long userId)
+        public async Task<TaskModel> GetTaskById(long taskId)
         {
-            var responses = _responseRepository.GetAllResponsesByUser(userId);
-            return responses;
-        }
-
-        public Task<TaskModel> GetTaskById(long taskId)
-        {
-            var task = _taskRepository.GetTaskById(taskId);
+            var task = await _taskRepository.GetTaskById(taskId);
             return task;
-        }
-
-        public Task<List<ResponseModel>> GetTaskResponses(long taskId)
-        {
-            var responses = _responseRepository.GetAllResponsesByTask(taskId);
-            return responses;
         }
 
         public async Task<List<TaskModel>> GetTasksAuthor(long userId)
