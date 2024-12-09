@@ -26,7 +26,7 @@ namespace FreelanceDB.Services
             return status;
         }
 
-        public Task<long> CreateTask(NewTaskRequest newTask)
+        public async Task<long> CreateTask(NewTaskRequest newTask)
         {
             TaskModel model = new TaskModel();
             model.Head = newTask.Head;
@@ -36,7 +36,7 @@ namespace FreelanceDB.Services
             model.AuthorId = newTask.AuthorId;
             model.StatusId = newTask.StatusId;
 
-            var taskId = _taskRepository.CreateTask(model);
+            var taskId = await _taskRepository.CreateTask(model);
             return taskId;
         }
 
