@@ -78,9 +78,9 @@ namespace FreelanceDB.Services
             
         }
 
-        public async Task<(string, DateTime)> GetRTokenAndExpiryTime(long id)
+        public async Task<(string, DateTime, string)> GetRTokenAndExpiryTimeAndRole(long id)
         {
-            var data = await _userRepository.GetRTokenAndExpiryTime(id);
+            var data = await _userRepository.GetRTokenAndExpiryTimeAndRole(id);
             return data;
         }
 

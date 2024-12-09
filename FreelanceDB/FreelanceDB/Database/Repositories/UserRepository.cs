@@ -106,10 +106,12 @@ namespace FreelanceDB.Database.Repositories
             return user.Id;
         }
 
-        public async Task<(string, DateTime)> GetRTokenAndExpiryTime(long id)
+        public async Task<(string, DateTime, string)> GetRTokenAndExpiryTimeAndRole(long id)
         {
-            User user = await _context.Users.FindAsync(id);
-            return (user.RToken, user.RefreshTokenExpiryTime);
+            User user = await _context.Users
+                .Include(u => u.Role)
+               .FirstOrDefaultAsync(u => u.Id == id);
+            return (user.RToken, user.RefreshTokenExpiryTime, user.Role.Role1);
         }
 
         public async Task<long> RemoveTokens(long id)

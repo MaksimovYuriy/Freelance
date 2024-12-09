@@ -64,7 +64,7 @@ namespace FreelanceDB.Authentication.Middleware
                 var roleClaim = claims.FindFirst(ClaimTypes.Role);
                 string role = (roleClaim.Value).ToString();
 
-                var data = await userService.GetRTokenAndExpiryTime(id);
+                var data = await userService.GetRTokenAndExpiryTimeAndRole(id);
                 var expiryTime = data.Item2;
                 var validRToken = data.Item1;
 

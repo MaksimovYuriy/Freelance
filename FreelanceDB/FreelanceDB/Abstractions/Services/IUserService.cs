@@ -16,7 +16,7 @@ namespace FreelanceDB.Abstractions.Services
 
         Task<UserModel> GetUser(long id);
 
-        Task<(string, DateTime)> GetRTokenAndExpiryTime(long id);
+        Task<(string, DateTime, string)> GetRTokenAndExpiryTimeAndRole(long id);
 
         Task<long> RemoveTokens(long id);
 
