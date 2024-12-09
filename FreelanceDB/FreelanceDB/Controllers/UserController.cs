@@ -65,6 +65,7 @@ namespace FreelanceDB.Controllers
         /// <summary>
         /// Получение данных пользователя по id
         /// </summary>
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<UserResponse>> GetUserById(long id)
         {

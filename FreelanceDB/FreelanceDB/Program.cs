@@ -66,7 +66,6 @@ builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
 builder.Services.AddSingleton<ILoggerProvider, LogProvider>(sp => new LogProvider(redisConfig.ConnectionString));
 builder.Services.AddTransient<ITaskService, TaskService>();
 builder.Services.AddDbContext<FreelancedbContext>();
-////////builder.Services.AddExceptionHandler<RefreshTokenExceptionHandler>();
 
 builder.Services.AddAuthentication(x =>
 {
@@ -76,13 +75,13 @@ builder.Services.AddAuthentication(x =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidIssuer = AuthOptions.Issuer,
-            ValidAudience = AuthOptions.Audience,
+            ValidIssuer = builder.Configuration["Token:Issuer"],
+            ValidAudience = builder.Configuration["Token:Audience"],
 
             ValidateAudience = true,
             ValidateIssuer = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(builder.Configuration["Token:Key"]),
             ValidateLifetime = true
         };
     });

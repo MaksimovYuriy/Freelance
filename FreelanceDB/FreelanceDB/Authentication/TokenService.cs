@@ -13,7 +13,18 @@ namespace FreelanceDB.Authentication
 {
     public class TokenService : ITokenService
     {
-        const int RefressExpiryDays = 2;
+        private readonly string Issuer;
+        private readonly string Audience;
+        private readonly string Key;
+        private readonly int RefressExpiryDays=2;
+        public TokenService(IConfiguration config)
+        {
+            Issuer = config["Token:Issuer"];
+            Audience = config["Token:Audience"];
+            Key = config["Token:Key"];
+        }
+
+
 
         public string GenerateAccessToken(long id, string role)
         {
@@ -24,11 +35,11 @@ namespace FreelanceDB.Authentication
                     new Claim(ClaimTypes.NameIdentifier, id.ToString()),
                     new Claim(ClaimTypes.Role,role)
                 }),
-                Issuer = AuthOptions.Issuer,
-                Audience = AuthOptions.Audience,
+                Issuer = this.Issuer,
+                Audience = this.Audience,
                 Expires = DateTime.Now.AddMinutes(AuthOptions.AccessTokenExpirationTime),
                 SigningCredentials = new SigningCredentials(
-                    AuthOptions.GetSymmetricSecurityKey(),
+                    AuthOptions.GetSymmetricSecurityKey(Key),
                     SecurityAlgorithms.HmacSha256)
             };
 
@@ -52,12 +63,12 @@ namespace FreelanceDB.Authentication
         {
             var parameters = new TokenValidationParameters
             {
-                ValidIssuer = AuthOptions.Issuer,
-                ValidAudience = AuthOptions.Audience,
+                ValidIssuer = this.Issuer,
+                ValidAudience = this.Audience,
                 ValidateAudience = true,
                 ValidateIssuer = true,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AuthOptions.GetSymmetricSecurityKey().ToString())),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AuthOptions.GetSymmetricSecurityKey(Key).ToString())),
                 ValidateLifetime = true
             };
 

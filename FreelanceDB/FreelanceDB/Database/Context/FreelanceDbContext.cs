@@ -3,18 +3,21 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using FreelanceDB.Database.Entities;
+using System.Data.Common;
 
 namespace FreelanceDB.Database.Context;
 
 public partial class FreelancedbContext : DbContext
 {
+    private readonly string _string;
     public FreelancedbContext()
     {
     }
 
-    public FreelancedbContext(DbContextOptions<FreelancedbContext> options)
+    public FreelancedbContext(DbContextOptions<FreelancedbContext> options, IConfiguration configuration)
         : base(options)
     {
+        _string = configuration["ConnectionStrings:PostgreSQLConnection"];
     }
 
     public virtual DbSet<Response> Responses { get; set; }
@@ -37,7 +40,7 @@ public partial class FreelancedbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Freelancedb;Username=developer;Password=developer");
+        => optionsBuilder.UseNpgsql(_string);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
