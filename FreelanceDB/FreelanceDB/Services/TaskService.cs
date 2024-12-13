@@ -26,7 +26,7 @@ namespace FreelanceDB.Services
             return status;
         }
 
-        public Task<long> CreateTask(NewTaskRequest newTask)
+        public async Task<long> CreateTask(NewTaskRequest newTask)
         {
             TaskModel model = new TaskModel();
             model.Head = newTask.Head;
@@ -36,14 +36,8 @@ namespace FreelanceDB.Services
             model.AuthorId = newTask.AuthorId;
             model.StatusId = newTask.StatusId;
 
-            var taskId = _taskRepository.CreateTask(model);
+            var taskId = await _taskRepository.CreateTask(model);
             return taskId;
-        }
-
-        public async Task<long> CreateTaskResponse(long taskId, long userId)
-        {
-            long responseId = await _responseRepository.CreateResponse(taskId, userId);
-            return responseId;
         }
 
         public async Task<long> DeleteTaskExecutor(long taskId)
@@ -89,22 +83,10 @@ namespace FreelanceDB.Services
             return filtered;
         }
 
-        public Task<List<ResponseModel>> GetMyResposes(long userId)
+        public async Task<TaskModel> GetTaskById(long taskId)
         {
-            var responses = _responseRepository.GetAllResponsesByUser(userId);
-            return responses;
-        }
-
-        public Task<TaskModel> GetTaskById(long taskId)
-        {
-            var task = _taskRepository.GetTaskById(taskId);
+            var task = await _taskRepository.GetTaskById(taskId);
             return task;
-        }
-
-        public Task<List<ResponseModel>> GetTaskResponses(long taskId)
-        {
-            var responses = _responseRepository.GetAllResponsesByTask(taskId);
-            return responses;
         }
 
         public async Task<List<TaskModel>> GetTasksAuthor(long userId)
