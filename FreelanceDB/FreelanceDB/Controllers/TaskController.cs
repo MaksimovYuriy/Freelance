@@ -2,6 +2,7 @@
 using FreelanceDB.Abstractions.Services;
 using FreelanceDB.Contracts.Requests;
 using FreelanceDB.Models;
+using FreelanceDB.RabbitMQ;
 using FreelanceDB.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,12 @@ namespace FreelanceDB.Controllers
     {
         private readonly ITaskService _taskService;
         private readonly ILogger<TaskController> _logger;
-        public TaskController(ITaskService taskService, ILogger<TaskController> logger)
+        private readonly IRabbitMqService _rabbitMqService;
+        public TaskController(ITaskService taskService, ILogger<TaskController> logger, IRabbitMqService rabbitMqService)
         {
             _taskService = taskService;
             _logger = logger;
+            _rabbitMqService = rabbitMqService;
         }
 
         [HttpGet("GetAllTasks")]
@@ -67,6 +70,7 @@ namespace FreelanceDB.Controllers
         [HttpPost("CreateTask")]
         public async Task<IActionResult> CreateTask(NewTaskRequest task)
         {
+            _rabbitMqService.SendCreateTaskMessage(task.AuthorId, task.Price);
             var result = await _taskService.CreateTask(task);
             return Ok(result);
         }

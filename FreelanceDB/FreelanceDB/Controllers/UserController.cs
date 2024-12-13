@@ -2,6 +2,7 @@
 using FreelanceDB.Contracts.Requests;
 using FreelanceDB.Contracts.Responses;
 using FreelanceDB.Database.Entities;
+using FreelanceDB.RabbitMQ;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,10 +17,12 @@ namespace FreelanceDB.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService service;
+        private readonly IRabbitMqService rabbitMqService;
 
-        public UserController(IUserService service)
+        public UserController(IUserService service, IRabbitMqService rabbitMq)
         {
             this.service = service;
+            rabbitMqService = rabbitMq;
         }
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace FreelanceDB.Controllers
             }
             else
             {
-
+                rabbitMqService.SendMessage(id);
                 return Ok(id);
             }
         }

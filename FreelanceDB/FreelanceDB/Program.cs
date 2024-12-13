@@ -6,6 +6,7 @@ using FreelanceDB.Authentication.Middleware;
 using FreelanceDB.Database.Context;
 using FreelanceDB.Database.Repositories;
 using FreelanceDB.Models;
+using FreelanceDB.RabbitMQ;
 using FreelanceDB.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
@@ -65,6 +66,7 @@ builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
 builder.Services.AddSingleton<ILoggerProvider, LogProvider>(sp => new LogProvider(redisConfig.ConnectionString));
 builder.Services.AddTransient<ITaskService, TaskService>();
+builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
 builder.Services.AddDbContext<FreelancedbContext>();
 
 builder.Services.AddAuthentication(x =>
