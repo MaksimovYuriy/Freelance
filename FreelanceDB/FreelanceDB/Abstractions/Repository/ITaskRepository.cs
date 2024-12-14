@@ -13,5 +13,7 @@ namespace FreelanceDB.Abstractions.Repository
         Task<long> UpdateTask(long id, TaskModel task);
         Task<long> DeleteTask(long id);
         Task<long> DeleteExecutor(long taskId);
+        Task<long> ChangeStatus(long taskId, int statusId);
+        Task<long> SetEndDate(long taksId);
     }
 }

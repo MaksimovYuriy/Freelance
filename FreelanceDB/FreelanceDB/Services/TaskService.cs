@@ -26,6 +26,20 @@ namespace FreelanceDB.Services
             return status;
         }
 
+        public async Task<long> CompleteTask(long taskId)
+        {
+            var status = await _taskRepository.ChangeStatus(taskId, 2);
+            if(status != 0)
+            {
+                status = await _taskRepository.SetEndDate(taskId);
+                return status;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         public async Task<long> CreateTask(NewTaskRequest newTask)
         {
             TaskModel model = new TaskModel();

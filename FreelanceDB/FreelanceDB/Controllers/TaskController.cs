@@ -81,5 +81,19 @@ namespace FreelanceDB.Controllers
             var result = await _taskService.GetFilteredTasks(filter);
             return Ok(result);
         }
+
+        [HttpPut("CompleteTask")]
+        public async Task<IActionResult> CompleteTask(long taskId)
+        {
+            var result = await _taskService.CompleteTask(taskId);
+            if(result != 0)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return NotFound(result);
+            }
+        }
     }
 }

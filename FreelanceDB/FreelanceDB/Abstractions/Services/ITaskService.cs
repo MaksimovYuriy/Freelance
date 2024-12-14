@@ -13,5 +13,6 @@ namespace FreelanceDB.Abstractions.Services
         Task<long> AddTaskExecutor(long taskId, long userId);
         Task<long> DeleteTaskExecutor(long taskId);
         Task<long> CreateTask(NewTaskRequest newTask);
+        Task<long> CompleteTask(long taskId);
     }
 }
