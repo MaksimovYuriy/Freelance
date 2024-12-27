@@ -1,10 +1,10 @@
-﻿using FreelanceDB.Abstractions.Services;
-using FreelanceDB.Contracts.Requests;
+﻿using FreelanceDB.Contracts.Requests;
 using FreelanceDB.Contracts.Requests.RespRequests;
 using FreelanceDB.Contracts.Responses.RespResponses;
 using FreelanceDB.Contracts.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using FreelanceDB.Services.Services;
 
 namespace FreelanceDB.Controllers
 {

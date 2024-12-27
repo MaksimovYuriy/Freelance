@@ -1,6 +1,6 @@
 ﻿using FreelanceDB.Models;
 
-namespace FreelanceDB.Abstractions.Services
+namespace FreelanceDB.Services.Services
 {
     public interface IResponseService
     {

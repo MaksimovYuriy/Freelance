@@ -1,6 +1,6 @@
 ﻿using FreelanceDB.Models;
 
-namespace FreelanceDB.Abstractions.Repository
+namespace FreelanceDB.Database.Repositories.Repository
 {
     public interface ITaskRepository
     {

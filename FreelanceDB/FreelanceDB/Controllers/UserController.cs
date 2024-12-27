@@ -1,8 +1,8 @@
-﻿using FreelanceDB.Abstractions.Services;
-using FreelanceDB.Contracts.Requests.UserRequests;
+﻿using FreelanceDB.Contracts.Requests.UserRequests;
 using FreelanceDB.Contracts.Responses.UserResponses;
 using FreelanceDB.Database.Entities;
 using FreelanceDB.RabbitMQ;
+using FreelanceDB.Services.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

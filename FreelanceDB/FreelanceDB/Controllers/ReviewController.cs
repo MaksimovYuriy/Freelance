@@ -1,6 +1,6 @@
-﻿using FreelanceDB.Abstractions.Services;
-using FreelanceDB.Contracts.Requests.ReviewRequests;
+﻿using FreelanceDB.Contracts.Requests.ReviewRequests;
 using FreelanceDB.Contracts.Responses.ReviewResponses;
+using FreelanceDB.Services.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

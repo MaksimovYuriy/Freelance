@@ -1,5 +1,5 @@
-﻿using FreelanceDB.Abstractions.Services;
-using FreelanceDB.Authentication.Abstractions;
+﻿using FreelanceDB.Authentication.Abstractions;
+using FreelanceDB.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FreelanceDB.Authentication

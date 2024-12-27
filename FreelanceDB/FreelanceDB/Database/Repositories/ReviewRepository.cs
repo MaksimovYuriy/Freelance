@@ -1,7 +1,7 @@
-﻿using FreelanceDB.Abstractions.Repository;
-using FreelanceDB.Contracts.Requests;
+﻿using FreelanceDB.Contracts.Requests;
 using FreelanceDB.Database.Context;
 using FreelanceDB.Database.Entities;
+using FreelanceDB.Database.Repositories.Repository;
 using FreelanceDB.Models;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,7 +1,7 @@
-﻿using FreelanceDB.Abstractions.Repository;
-using FreelanceDB.Abstractions.Services;
-using FreelanceDB.Contracts.Requests.ReviewRequests;
+﻿using FreelanceDB.Contracts.Requests.ReviewRequests;
+using FreelanceDB.Database.Repositories.Repository;
 using FreelanceDB.Models;
+using FreelanceDB.Services.Services;
 
 namespace FreelanceDB.Services
 {

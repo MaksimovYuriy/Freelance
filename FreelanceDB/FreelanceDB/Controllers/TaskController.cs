@@ -1,14 +1,8 @@
-﻿using FreelanceDB.Abstractions.Repository;
-using FreelanceDB.Abstractions.Services;
-using FreelanceDB.Contracts.Requests.TaskRequests;
+﻿using FreelanceDB.Contracts.Requests.TaskRequests;
 using FreelanceDB.Contracts.Responses.TaskResponses;
-using FreelanceDB.Models;
 using FreelanceDB.RabbitMQ;
-using FreelanceDB.Services;
-using Microsoft.AspNetCore.Http;
+using FreelanceDB.Services.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.InteropServices;
-using System.Text.Json;
 
 namespace FreelanceDB.Controllers
 {

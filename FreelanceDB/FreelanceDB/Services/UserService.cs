@@ -1,9 +1,9 @@
-﻿using FreelanceDB.Abstractions.Repository;
-using FreelanceDB.Abstractions.Services;
-using FreelanceDB.Authentication.Abstractions;
+﻿using FreelanceDB.Authentication.Abstractions;
 using FreelanceDB.Contracts.Requests.UserRequests;
 using FreelanceDB.Database.Entities;
+using FreelanceDB.Database.Repositories.Repository;
 using FreelanceDB.Models;
+using FreelanceDB.Services.Services;
 
 namespace FreelanceDB.Services
 {
@@ -74,7 +74,7 @@ namespace FreelanceDB.Services
                 var time = _tokenService.GetRefreshTokenExpireTime();
                 user.AToken = atoken;
                 user.RToken = rtoken;
-                _userRepository.AddTokens(user.Id, rtoken,atoken , time );
+                await _userRepository.AddTokens(user.Id, rtoken,atoken , time );
                 return user;
             }
             else//если пароль неверен

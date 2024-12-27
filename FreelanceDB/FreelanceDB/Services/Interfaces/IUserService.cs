@@ -2,7 +2,7 @@
 using FreelanceDB.Database.Repositories;
 using FreelanceDB.Models;
 
-namespace FreelanceDB.Abstractions.Services
+namespace FreelanceDB.Services.Services
 {
     public interface IUserService
     {

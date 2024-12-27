@@ -1,7 +1,7 @@
 ﻿using FreelanceDB.Contracts.Requests.ReviewRequests;
 using FreelanceDB.Models;
 
-namespace FreelanceDB.Abstractions.Services
+namespace FreelanceDB.Services.Services
 {
     public interface IReviewService
     {

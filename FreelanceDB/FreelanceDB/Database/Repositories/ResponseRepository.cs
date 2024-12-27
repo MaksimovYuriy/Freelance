@@ -1,6 +1,6 @@
-﻿using FreelanceDB.Abstractions.Repository;
-using FreelanceDB.Database.Context;
+﻿using FreelanceDB.Database.Context;
 using FreelanceDB.Database.Entities;
+using FreelanceDB.Database.Repositories.Repository;
 using FreelanceDB.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;

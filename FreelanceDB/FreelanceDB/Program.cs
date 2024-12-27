@@ -1,20 +1,15 @@
-using FreelanceDB.Abstractions.Repository;
-using FreelanceDB.Abstractions.Services;
 using FreelanceDB.Authentication;
 using FreelanceDB.Authentication.Abstractions;
-using FreelanceDB.Authentication.Middleware;
 using FreelanceDB.Database.Context;
 using FreelanceDB.Database.Repositories;
+using FreelanceDB.Database.Repositories.Repository;
 using FreelanceDB.Models;
 using FreelanceDB.RabbitMQ;
 using FreelanceDB.Services;
+using FreelanceDB.Services.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -97,7 +92,6 @@ builder.Services.AddCors(option => option.AddPolicy(
 var app = builder.Build();
 
 
-app.UseMiddleware<RefreshTokenExceptionHandler>();
 app.UseAuthorization();
 
 // Configure the HTTP request pipeline.

@@ -1,9 +1,5 @@
-﻿using FreelanceDB.Abstractions.Services;
-using FreelanceDB.Authentication.Abstractions;
-using FreelanceDB.Database.Entities;
-using FreelanceDB.Services;
+﻿using FreelanceDB.Authentication.Abstractions;
 using Microsoft.IdentityModel.Tokens;
-using System.Collections.Specialized;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
