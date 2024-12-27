@@ -1,6 +1,6 @@
 ﻿using FreelanceDB.Models;
 
-namespace FreelanceDB.Contracts.Requests.TaskResponse
+namespace FreelanceDB.Contracts.Responses.TaskResponses
 {
     public record TasksResponse
     (

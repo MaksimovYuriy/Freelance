@@ -2,7 +2,7 @@
 using FreelanceDB.Abstractions.Services;
 using FreelanceDB.Contracts.Requests;
 using FreelanceDB.Contracts.Requests.TaskRequests;
-using FreelanceDB.Contracts.Requests.TaskResponse;
+using FreelanceDB.Contracts.Responses.TaskResponses;
 using FreelanceDB.Models;
 using FreelanceDB.RabbitMQ;
 using FreelanceDB.Services;

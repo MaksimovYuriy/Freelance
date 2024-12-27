@@ -1,4 +1,4 @@
-﻿namespace FreelanceDB.Contracts.Requests
+﻿namespace FreelanceDB.Contracts.Requests.ReviewRequests
 {
     public record NewReviewRequest
     (

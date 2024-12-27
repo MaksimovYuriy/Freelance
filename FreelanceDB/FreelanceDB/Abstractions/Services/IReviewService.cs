@@ -1,4 +1,4 @@
-﻿using FreelanceDB.Contracts.Requests;
+﻿using FreelanceDB.Contracts.Requests.ReviewRequests;
 using FreelanceDB.Models;
 
 namespace FreelanceDB.Abstractions.Services

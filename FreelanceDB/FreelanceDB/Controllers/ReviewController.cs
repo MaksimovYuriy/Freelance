@@ -1,5 +1,5 @@
 ﻿using FreelanceDB.Abstractions.Services;
-using FreelanceDB.Contracts.Requests;
+using FreelanceDB.Contracts.Requests.ReviewRequests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,23 +17,23 @@ namespace FreelanceDB.Controllers
         }
 
         [HttpGet("CalculateUserRate")]
-        public async Task<IActionResult> CalculateUserRate(long userId)
+        public async Task<IActionResult> CalculateUserRate([FromQuery] CalculateRateRequest request)
         {
-            var result = await _reviewService.CalculateUserRate(userId);
+            var result = await _reviewService.CalculateUserRate(request.userId);
             return Ok(result);
         }
 
         [HttpGet("ReviewsAuthor")]
-        public async Task<IActionResult> ReviewsAuthor(long authorId)
+        public async Task<IActionResult> ReviewsAuthor([FromQuery] ReviewsAuthorRequest request)
         {
-            var result = await _reviewService.GetReviewsByAuthor(authorId);
+            var result = await _reviewService.GetReviewsByAuthor(request.authorId);
             return Ok(result);
         }
 
         [HttpGet("ReviewsRecipient")]
-        public async Task<IActionResult> ReviewsRecipient(long recipientId)
+        public async Task<IActionResult> ReviewsRecipient([FromQuery] ReviewsRecipientRequest request)
         {
-            var result = await _reviewService.GetReviewsByRecipient(recipientId);
+            var result = await _reviewService.GetReviewsByRecipient(request.recipientId);
             return Ok(result);
         }
 
