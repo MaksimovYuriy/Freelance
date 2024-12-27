@@ -55,7 +55,6 @@ namespace FreelanceDB.Services
 
         public async Task<bool> DeleteUser(long id)
         {
-
             return await _userRepository.Delete(id);
         }
 

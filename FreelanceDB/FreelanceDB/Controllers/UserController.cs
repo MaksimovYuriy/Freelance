@@ -31,7 +31,9 @@ namespace FreelanceDB.Controllers
         [HttpGet]
         public async Task<ActionResult<bool>> ChekUser([FromQuery] CheckUserRequest request)
         {
-            return Ok(await service.ChekUser(request.login));
+            var result = await service.ChekUser(request.login);
+            UserCheckResponse response = new UserCheckResponse(isChecked: result);
+            return Ok(response);
         }
 
         /// <summary>
@@ -50,7 +52,8 @@ namespace FreelanceDB.Controllers
             else
             {
                 rabbitMqService.SendMessage(id);
-                return Ok(id);
+                CreateUserResponse response = new CreateUserResponse(newUserId: id);
+                return Ok(response);
             }
         }
 
@@ -60,7 +63,9 @@ namespace FreelanceDB.Controllers
         [HttpDelete]
         public async Task<ActionResult<bool>> DeleteUser(DeleteUserRequest request)
         {
-            return Ok(await service.DeleteUser(request.userId));
+            var status = await service.DeleteUser(request.userId);
+            DeleteUserResponse response = new DeleteUserResponse(isDeleted: status);
+            return Ok(response);
         }
 
         /// <summary>
