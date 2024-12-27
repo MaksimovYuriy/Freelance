@@ -20,12 +20,17 @@ namespace FreelanceDB.Database.Repositories
 
             await _context.SaveChangesAsync();
 
-            if(status != 0)
-            {
-                return status;
-            }
+            return status;
+        }
 
-            throw new Exception("Unknown taks.id or executor is already exist");
+        public async Task<long> ChangeStatus(long taskId, int statusId)
+        {
+            var status = await _context.Tasks.Where(p => p.Id == taskId)
+                .ExecuteUpdateAsync(task => task.SetProperty(m => m.StatusId, m => statusId));
+
+            await _context.SaveChangesAsync();
+
+            return status;
         }
 
         public async Task<long> CreateTask(TaskModel task)
@@ -188,6 +193,16 @@ namespace FreelanceDB.Database.Repositories
             };
 
             return model;
+        }
+
+        public async Task<long> SetEndDate(long taksId)
+        {
+            var status = await _context.Tasks.Where(p => p.Id == taksId)
+                .ExecuteUpdateAsync(task => task.SetProperty(m => m.EndDate, m => DateOnly.FromDateTime(DateTime.Now)));
+
+            await _context.SaveChangesAsync();
+
+            return status;
         }
 
         public async Task<long> UpdateTask(long id, TaskModel task)

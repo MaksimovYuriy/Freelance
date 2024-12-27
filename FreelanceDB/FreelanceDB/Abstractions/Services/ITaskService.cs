@@ -1,4 +1,4 @@
-﻿using FreelanceDB.Contracts.Requests;
+﻿using FreelanceDB.Contracts.Requests.TaskRequests;
 using FreelanceDB.Models;
 
 namespace FreelanceDB.Abstractions.Services
@@ -13,5 +13,6 @@ namespace FreelanceDB.Abstractions.Services
         Task<long> AddTaskExecutor(long taskId, long userId);
         Task<long> DeleteTaskExecutor(long taskId);
         Task<long> CreateTask(NewTaskRequest newTask);
+        Task<long> CompleteTask(long taskId);
     }
 }

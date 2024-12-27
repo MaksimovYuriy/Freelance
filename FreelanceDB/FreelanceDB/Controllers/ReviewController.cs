@@ -1,5 +1,6 @@
 ﻿using FreelanceDB.Abstractions.Services;
-using FreelanceDB.Contracts.Requests;
+using FreelanceDB.Contracts.Requests.ReviewRequests;
+using FreelanceDB.Contracts.Responses.ReviewResponses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,31 +18,35 @@ namespace FreelanceDB.Controllers
         }
 
         [HttpGet("CalculateUserRate")]
-        public async Task<IActionResult> CalculateUserRate(long userId)
+        public async Task<IActionResult> CalculateUserRate([FromQuery] CalculateRateRequest request)
         {
-            var result = await _reviewService.CalculateUserRate(userId);
-            return Ok(result);
+            var result = await _reviewService.CalculateUserRate(request.userId);
+            CalculateRateResponse response = new CalculateRateResponse(rate: result);
+            return Ok(response);
         }
 
         [HttpGet("ReviewsAuthor")]
-        public async Task<IActionResult> ReviewsAuthor(long authorId)
+        public async Task<IActionResult> ReviewsAuthor([FromQuery] ReviewsAuthorRequest request)
         {
-            var result = await _reviewService.GetReviewsByAuthor(authorId);
-            return Ok(result);
+            var result = await _reviewService.GetReviewsByAuthor(request.authorId);
+            ReviewsResponse response = new ReviewsResponse(reviews: result);
+            return Ok(response);
         }
 
         [HttpGet("ReviewsRecipient")]
-        public async Task<IActionResult> ReviewsRecipient(long recipientId)
+        public async Task<IActionResult> ReviewsRecipient([FromQuery] ReviewsRecipientRequest request)
         {
-            var result = await _reviewService.GetReviewsByRecipient(recipientId);
-            return Ok(result);
+            var result = await _reviewService.GetReviewsByRecipient(request.recipientId);
+            ReviewsResponse response = new ReviewsResponse(reviews: result);
+            return Ok(response);
         }
 
         [HttpPost("NewReview")]
         public async Task<IActionResult> NewReview(NewReviewRequest request)
         {
             var result = await _reviewService.CreateReview(request);
-            return Ok(result);
+            NewReviewResponse response = new NewReviewResponse(newReviewId: result);
+            return Ok(response);
         }
     }
 }

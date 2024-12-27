@@ -1,6 +1,6 @@
 ﻿using FreelanceDB.Abstractions.Repository;
 using FreelanceDB.Abstractions.Services;
-using FreelanceDB.Contracts.Requests;
+using FreelanceDB.Contracts.Requests.TaskRequests;
 using FreelanceDB.Database.Repositories;
 using FreelanceDB.Models;
 
@@ -24,6 +24,20 @@ namespace FreelanceDB.Services
         {
             long status = await _taskRepository.AddExecutor(taskId, userId);
             return status;
+        }
+
+        public async Task<long> CompleteTask(long taskId)
+        {
+            var status = await _taskRepository.ChangeStatus(taskId, 2);
+            if(status != 0)
+            {
+                status = await _taskRepository.SetEndDate(taskId);
+                return status;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public async Task<long> CreateTask(NewTaskRequest newTask)

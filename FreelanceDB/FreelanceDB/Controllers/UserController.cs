@@ -1,6 +1,6 @@
 ﻿using FreelanceDB.Abstractions.Services;
-using FreelanceDB.Contracts.Requests;
-using FreelanceDB.Contracts.Responses;
+using FreelanceDB.Contracts.Requests.UserRequests;
+using FreelanceDB.Contracts.Responses.UserResponses;
 using FreelanceDB.Database.Entities;
 using FreelanceDB.RabbitMQ;
 using Microsoft.AspNetCore.Authorization;
@@ -29,9 +29,11 @@ namespace FreelanceDB.Controllers
         /// Используется при регистрации для проверки уникальности логина
         /// </summary>
         [HttpGet]
-        public async Task<ActionResult<bool>> ChekUser(string login)
+        public async Task<ActionResult<bool>> ChekUser([FromQuery] CheckUserRequest request)
         {
-            return Ok(await service.ChekUser(login));
+            var result = await service.ChekUser(request.login);
+            UserCheckResponse response = new UserCheckResponse(isChecked: result);
+            return Ok(response);
         }
 
         /// <summary>
@@ -50,7 +52,8 @@ namespace FreelanceDB.Controllers
             else
             {
                 rabbitMqService.SendMessage(id);
-                return Ok(id);
+                CreateUserResponse response = new CreateUserResponse(newUserId: id);
+                return Ok(response);
             }
         }
 
@@ -58,9 +61,11 @@ namespace FreelanceDB.Controllers
         /// Удаление пользователя
         /// </summary>
         [HttpDelete]
-        public async Task<ActionResult<bool>> DeleteUser(long id)
+        public async Task<ActionResult<bool>> DeleteUser(DeleteUserRequest request)
         {
-            return Ok(await service.DeleteUser(id));
+            var status = await service.DeleteUser(request.userId);
+            DeleteUserResponse response = new DeleteUserResponse(isDeleted: status);
+            return Ok(response);
         }
 
         /// <summary>
@@ -80,9 +85,9 @@ namespace FreelanceDB.Controllers
         /// </summary>
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<UserResponse>> GetUserById(long id)
+        public async Task<ActionResult<UserResponse>> GetUserById([FromQuery] UserByIdRequest request)
         {
-            var user = await service.GetUser(id);
+            var user = await service.GetUser(request.userId);
             //конверация в userresponse
             var response = new UserResponse(user.Id, user.Nickname, user.AToken, user.RToken);
 

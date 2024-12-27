@@ -1,7 +1,7 @@
 ﻿using FreelanceDB.Abstractions.Repository;
 using FreelanceDB.Abstractions.Services;
 using FreelanceDB.Authentication.Abstractions;
-using FreelanceDB.Contracts.Requests;
+using FreelanceDB.Contracts.Requests.UserRequests;
 using FreelanceDB.Database.Entities;
 using FreelanceDB.Models;
 
@@ -55,7 +55,6 @@ namespace FreelanceDB.Services
 
         public async Task<bool> DeleteUser(long id)
         {
-
             return await _userRepository.Delete(id);
         }
 
