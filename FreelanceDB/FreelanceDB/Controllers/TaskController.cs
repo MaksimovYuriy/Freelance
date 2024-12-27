@@ -1,6 +1,7 @@
 ﻿using FreelanceDB.Abstractions.Repository;
 using FreelanceDB.Abstractions.Services;
 using FreelanceDB.Contracts.Requests;
+using FreelanceDB.Contracts.Requests.TaskRequests;
 using FreelanceDB.Models;
 using FreelanceDB.RabbitMQ;
 using FreelanceDB.Services;
@@ -33,37 +34,37 @@ namespace FreelanceDB.Controllers
         }
 
         [HttpGet("GetTasksAuthor")]
-        public async Task<IActionResult> GetTasksAuthor(long userId)
+        public async Task<IActionResult> GetTasksAuthor([FromQuery] TasksByAuthorIdRequest request)
         {
-            var result = await _taskService.GetTasksAuthor(userId);
+            var result = await _taskService.GetTasksAuthor(request.authorId);
             return Ok(result);
         }
 
         [HttpGet("GetTasksExecutor")]
-        public async Task<IActionResult> GetTasksExecutor(long userId)
+        public async Task<IActionResult> GetTasksExecutor([FromQuery] TasksByExecutorIdRequest request)
         {
-            var result = await _taskService.GetTasksExecutor(userId);
+            var result = await _taskService.GetTasksExecutor(request.executorId);
             return Ok(result);
         }
 
         [HttpGet("GetTaskById")]
-        public async Task<IActionResult> GetTaskById(long taskId)
+        public async Task<IActionResult> GetTaskById([FromQuery] TaskByIdRequest request)
         {
-            var result = await _taskService.GetTaskById(taskId);
+            var result = await _taskService.GetTaskById(request.taskId);
             return Ok(result);
         }
 
         [HttpPut("DeleteTaskExecutor")]
-        public async Task<IActionResult> DeleteTaskExecutor(long taskId)
+        public async Task<IActionResult> DeleteTaskExecutor(DeleteTaskExecutorRequest request)
         {
-            var result = await _taskService.DeleteTaskExecutor(taskId);
+            var result = await _taskService.DeleteTaskExecutor(request.taskId);
             return Ok(result);
         }
 
         [HttpPut("AddTaskExecutor")]
-        public async Task<IActionResult> AddTaskExecutor(long taskId, long executorId)
+        public async Task<IActionResult> AddTaskExecutor(AddTaskExecutorRequest request)
         {
-            var result = await _taskService.AddTaskExecutor(taskId, executorId);
+            var result = await _taskService.AddTaskExecutor(request.taskId, request.executorId);
             return Ok(result);
         }
 
@@ -83,9 +84,9 @@ namespace FreelanceDB.Controllers
         }
 
         [HttpPut("CompleteTask")]
-        public async Task<IActionResult> CompleteTask(long taskId)
+        public async Task<IActionResult> CompleteTask(CompleteTaskRequest request)
         {
-            var result = await _taskService.CompleteTask(taskId);
+            var result = await _taskService.CompleteTask(request.taskId);
             if(result != 0)
             {
                 return Ok(result);
