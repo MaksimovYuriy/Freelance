@@ -2,12 +2,14 @@
 using FreelanceDB.Abstractions.Services;
 using FreelanceDB.Contracts.Requests;
 using FreelanceDB.Contracts.Requests.TaskRequests;
+using FreelanceDB.Contracts.Requests.TaskResponse;
 using FreelanceDB.Models;
 using FreelanceDB.RabbitMQ;
 using FreelanceDB.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 
 namespace FreelanceDB.Controllers
 {
@@ -30,42 +32,48 @@ namespace FreelanceDB.Controllers
         {
             _logger.LogInformation("Get tasks " + DateTime.Now.ToString());
             var result = await _taskService.GetAllTasks();
-            return Ok(result);
+            TasksResponse response = new TasksResponse(tasks: result);
+            return Ok(response);
         }
 
         [HttpGet("GetTasksAuthor")]
         public async Task<IActionResult> GetTasksAuthor([FromQuery] TasksByAuthorIdRequest request)
         {
             var result = await _taskService.GetTasksAuthor(request.authorId);
-            return Ok(result);
+            TasksResponse response = new TasksResponse(tasks: result);
+            return Ok(response);
         }
 
         [HttpGet("GetTasksExecutor")]
         public async Task<IActionResult> GetTasksExecutor([FromQuery] TasksByExecutorIdRequest request)
         {
             var result = await _taskService.GetTasksExecutor(request.executorId);
-            return Ok(result);
+            TasksResponse response = new TasksResponse(tasks: result);
+            return Ok(response);
         }
 
         [HttpGet("GetTaskById")]
         public async Task<IActionResult> GetTaskById([FromQuery] TaskByIdRequest request)
         {
             var result = await _taskService.GetTaskById(request.taskId);
-            return Ok(result);
+            TaskByIdResponse response = new TaskByIdResponse(task: result);
+            return Ok(response);
         }
 
         [HttpPut("DeleteTaskExecutor")]
         public async Task<IActionResult> DeleteTaskExecutor(DeleteTaskExecutorRequest request)
         {
             var result = await _taskService.DeleteTaskExecutor(request.taskId);
-            return Ok(result);
+            DeleteTaskExecutorResponse response = new DeleteTaskExecutorResponse(deletedExecutors: result);
+            return Ok(response);
         }
 
         [HttpPut("AddTaskExecutor")]
         public async Task<IActionResult> AddTaskExecutor(AddTaskExecutorRequest request)
         {
             var result = await _taskService.AddTaskExecutor(request.taskId, request.executorId);
-            return Ok(result);
+            AddTaskExecutorResponse response = new AddTaskExecutorResponse(addedExecutors: result);
+            return Ok(response);
         }
 
         [HttpPost("CreateTask")]
@@ -73,27 +81,30 @@ namespace FreelanceDB.Controllers
         {
             _rabbitMqService.SendCreateTaskMessage(task.AuthorId, task.Price);
             var result = await _taskService.CreateTask(task);
-            return Ok(result);
+            CreateTaskResponse response = new CreateTaskResponse(newTaskId: result);
+            return Ok(response);
         }
 
         [HttpGet("GetFilteredTasks")]
         public async Task<IActionResult> GetFilteredTask([FromQuery] FilterTasksRequest filter)
         {
             var result = await _taskService.GetFilteredTasks(filter);
-            return Ok(result);
+            TasksResponse response = new TasksResponse(tasks: result);
+            return Ok(response);
         }
 
         [HttpPut("CompleteTask")]
         public async Task<IActionResult> CompleteTask(CompleteTaskRequest request)
         {
             var result = await _taskService.CompleteTask(request.taskId);
+            CompleteTaskResponse response = new CompleteTaskResponse(completedTasks: result);
             if(result != 0)
             {
-                return Ok(result);
+                return Ok(response);
             }
             else
             {
-                return NotFound(result);
+                return NotFound(response);
             }
         }
     }
