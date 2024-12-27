@@ -1,6 +1,5 @@
 ﻿using FreelanceDB.Abstractions.Repository;
 using FreelanceDB.Abstractions.Services;
-using FreelanceDB.Contracts.Requests;
 using FreelanceDB.Contracts.Requests.TaskRequests;
 using FreelanceDB.Database.Repositories;
 using FreelanceDB.Models;
