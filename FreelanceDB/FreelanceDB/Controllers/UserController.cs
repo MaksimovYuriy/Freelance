@@ -17,12 +17,14 @@ namespace FreelanceDB.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService service;
+        private readonly ILogger<UserController> _logger;
         private readonly IRabbitMqService rabbitMqService;
 
-        public UserController(IUserService service, IRabbitMqService rabbitMq)
+        public UserController(IUserService service, IRabbitMqService rabbitMq, ILogger<UserController> logger)
         {
             this.service = service;
             rabbitMqService = rabbitMq;
+            _logger = logger;
         }
 
         /// <summary>
@@ -33,6 +35,7 @@ namespace FreelanceDB.Controllers
         {
             var result = await service.ChekUser(request.login);
             UserCheckResponse response = new UserCheckResponse(isChecked: result);
+            _logger.LogInformation($"Checked user: {request.login} " + DateTime.Now.ToString());
             return Ok(response);
         }
 
@@ -47,12 +50,14 @@ namespace FreelanceDB.Controllers
             var id = await service.CreateUser(request);
             if (id == 0)
             {
+                _logger.LogInformation($"Trying to create user with existing login: {request.Login} " + DateTime.Now.ToString());
                 return BadRequest("Логин занят");
             }
             else
             {
                 rabbitMqService.SendMessage(id);
                 CreateUserResponse response = new CreateUserResponse(newUserId: id);
+                _logger.LogInformation($"Create user: {id} " + DateTime.Now.ToString());
                 return Ok(response);
             }
         }
@@ -65,7 +70,15 @@ namespace FreelanceDB.Controllers
         {
             var status = await service.DeleteUser(request.userId);
             DeleteUserResponse response = new DeleteUserResponse(isDeleted: status);
-            return Ok(response);
+
+            if(status == true)
+            {
+                _logger.LogInformation($"Delete user: {request.userId} " + DateTime.Now.ToString());
+                return Ok(response);
+            }
+
+            _logger.LogWarning($"User: {request.userId} is not existing " + DateTime.Now.ToString());
+            return NotFound(response);
         }
 
         /// <summary>
@@ -77,7 +90,14 @@ namespace FreelanceDB.Controllers
             var user = await service.GetUser(request.login, request.password);
             var response = new UserResponse(user.Id, user.Nickname, user.AToken, user.RToken);
 
-            return Ok(response);
+            if (user != null)
+            {
+                _logger.LogInformation($"Get user by login: {request.login} " + DateTime.Now.ToString());
+                return Ok(response);
+            }
+
+            _logger.LogWarning($"Trying to get user by login: {request.login}" + DateTime.Now.ToString());
+            return NotFound(response);
         }
 
         /// <summary>
@@ -91,7 +111,14 @@ namespace FreelanceDB.Controllers
             //конверация в userresponse
             var response = new UserResponse(user.Id, user.Nickname, user.AToken, user.RToken);
 
-            return Ok(response);
+            if (user != null)
+            {
+                _logger.LogInformation($"Get user by id: {request.userId} " + DateTime.Now.ToString());
+                return Ok(response);
+            }
+
+            _logger.LogWarning($"Trying to get user by id: {request.userId}" + DateTime.Now.ToString());
+            return NotFound(response);
         }
     }
 }
