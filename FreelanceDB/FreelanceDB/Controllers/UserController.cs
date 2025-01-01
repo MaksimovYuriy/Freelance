@@ -117,7 +117,8 @@ namespace FreelanceDB.Controllers
                 return Ok(response);
             }
 
-            return Ok(response);
+            _logger.LogWarning($"Trying to get user by login: {request.userId}" + DateTime.Now.ToString());
+            return NotFound(response);
         }
     }
 }
