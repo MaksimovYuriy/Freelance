@@ -1,5 +1,6 @@
 ﻿using FreelanceDB.Database.Context;
 using StackExchange.Redis;
+using FreelanceDB.Exceptions;
 
 namespace FreelanceDB.Services
 {
@@ -14,7 +15,7 @@ namespace FreelanceDB.Services
             _database = database;
         }
 
-        public IDisposable BeginScope<TState>(TState state)
+        public IDisposable? BeginScope<TState>(TState state)
         {
             return null;
         }
@@ -24,14 +25,14 @@ namespace FreelanceDB.Services
             return true; // Логируем все уровни
         }
 
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception, string> formatter)
         {
             if (!IsEnabled(logLevel))
             {
                 return;
             }
 
-            var message = formatter(state, exception);
+            var message = formatter(state, exception ?? new CustomNullException("Null-exception"));
 
             if (string.IsNullOrEmpty(message))
             {
