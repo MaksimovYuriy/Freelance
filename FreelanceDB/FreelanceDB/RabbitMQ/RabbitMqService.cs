@@ -7,6 +7,11 @@ namespace FreelanceDB.RabbitMQ
 {
     public class RabbitMqService : IRabbitMqService
     {
+        private readonly IConfiguration _config;
+        public RabbitMqService(IConfiguration configuration)
+        {
+            _config = configuration;
+        }
         public void SendMessage(object obj)
         {
             var message = System.Text.Json.JsonSerializer.Serialize(obj);
@@ -15,7 +20,7 @@ namespace FreelanceDB.RabbitMQ
 
         public async void SendCreateUserMessage(string message)
         {
-            var factory = new ConnectionFactory() { Uri = new Uri("amqps://lzpoyxzx:zHSe2yBq-j1eaCjF8S6ztpMg0Y_D2xg_@dog.lmq.cloudamqp.com/lzpoyxzx") };
+            var factory = new ConnectionFactory() { Uri = new Uri(_config["RabbitMQ: ConnectionString"]) };
             using var connection = await factory.CreateConnectionAsync();
             using var channel = await connection.CreateChannelAsync();
 
@@ -34,7 +39,7 @@ namespace FreelanceDB.RabbitMQ
 
         public async void SendCreateTaskMessage(long authorId, int price)
         {
-            var factory = new ConnectionFactory() { Uri = new Uri("amqps://lzpoyxzx:zHSe2yBq-j1eaCjF8S6ztpMg0Y_D2xg_@dog.lmq.cloudamqp.com/lzpoyxzx") };
+            var factory = new ConnectionFactory() { Uri = new Uri(_config["RabbitMQ: ConnectionString"]) };
             using var connection = await factory.CreateConnectionAsync();
             using var channel = await connection.CreateChannelAsync();
 
