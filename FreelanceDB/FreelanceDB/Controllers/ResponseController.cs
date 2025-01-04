@@ -8,7 +8,7 @@ using FreelanceDB.Services.Services;
 
 namespace FreelanceDB.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ResponseController : ControllerBase
     {
@@ -21,28 +21,52 @@ namespace FreelanceDB.Controllers
             _logger = logger;
         }
 
-        [HttpPost("CreateTaskResponse")]
+        [HttpPost]
         public async Task<IActionResult> CreateTaskResponse([FromQuery] CreateRespRequest request)
         {
             var result = await _responseService.CreateTaskResponse(request.taskId, request.userId);
             CreateRespResponse response = new CreateRespResponse(newResponseId: result);
-            return Ok(response);
+
+            if(result != 0)
+            {
+                _logger.LogInformation($"Create response on task: {request.taskId} " + DateTime.Now.ToString());
+                return Ok(response);
+            }
+
+            _logger.LogWarning($"Response on task: {request.taskId} not created " + DateTime.Now.ToString());
+            return BadRequest(response);
         }
 
-        [HttpGet("GetMyResponses")]
+        [HttpGet]
         public async Task<IActionResult> GetMyResponses([FromQuery] MyRespsRequest request)
         {
             var result = await _responseService.GetMyResposes(request.userId);
             RespsResponse response = new RespsResponse(responses: result);
-            return Ok(response);
+
+            if (result != null && result.Any())
+            {
+                _logger.LogInformation($"Get responses by userId: {request.userId} " + DateTime.Now.ToString());
+                return Ok(response);
+            }
+
+            _logger.LogWarning($"Response by userId: {request.userId} not found " + DateTime.Now.ToString());
+            return NotFound(response);
         }
 
-        [HttpGet("GetTaskResponses")]
+        [HttpGet]
         public async Task<IActionResult> GetTaskResponses([FromQuery] TaskRespsRequest request)
         {
             var result = await _responseService.GetTaskResponses(request.taskId);
             RespsResponse response = new RespsResponse(responses: result);
-            return Ok(response);
+
+            if(result != null && result.Any())
+            {
+                _logger.LogInformation($"Get responses by taskId: {request.taskId} " + DateTime.Now.ToString());
+                return Ok(response);
+            }
+
+            _logger.LogWarning($"Response by taskId: {request.taskId} not found " + DateTime.Now.ToString());
+            return NotFound(response);
         }
     }
 }
