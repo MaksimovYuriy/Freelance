@@ -1,4 +1,4 @@
-﻿namespace FreelanceDB.RabbitMQ
+﻿namespace FreelanceDB.RabbitMQ.Contracts
 {
     record CreateTaskRabbitMqModel
     (

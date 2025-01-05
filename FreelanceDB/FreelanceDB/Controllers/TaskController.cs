@@ -156,6 +156,11 @@ namespace FreelanceDB.Controllers
             CompleteTaskResponse response = new CompleteTaskResponse(completedTasks: result);
             if(result != 0)
             {
+                var task = await _taskService.GetTaskById(request.taskId);
+                if(task.ExecutorId != null)
+                {
+                    _rabbitMqService.SendFinishTaskMessage(task.AuthorId, task.Price, task.ExecutorId.Value);
+                }
                 _logger.LogInformation($"Complete task, id:{result} " + DateTime.Now.ToString());
                 return Ok(response);
             }
