@@ -2,7 +2,7 @@
 using StackExchange.Redis;
 using FreelanceDB.Exceptions;
 
-namespace FreelanceDB.Services
+namespace FreelanceDB.Services.Logger
 {
     public class LogService : ILogger
     {

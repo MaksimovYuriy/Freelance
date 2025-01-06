@@ -6,6 +6,7 @@ using FreelanceDB.Database.Repositories.Repository;
 using FreelanceDB.Models;
 using FreelanceDB.RabbitMQ;
 using FreelanceDB.Services;
+using FreelanceDB.Services.Logger;
 using FreelanceDB.Services.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;

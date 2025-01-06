@@ -1,6 +1,6 @@
 ﻿using StackExchange.Redis;
 
-namespace FreelanceDB.Services
+namespace FreelanceDB.Services.Logger
 {
     public class LogProvider : ILoggerProvider
     {

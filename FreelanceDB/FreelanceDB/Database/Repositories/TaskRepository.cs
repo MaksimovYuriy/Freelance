@@ -8,9 +8,12 @@ namespace FreelanceDB.Database.Repositories
     public class TaskRepository : ITaskRepository
     {
         private readonly FreelancedbContext _context;
+        private readonly ILogger<TaskRepository> _logger;
 
-        public TaskRepository(FreelancedbContext context) {
+        public TaskRepository(FreelancedbContext context, ILogger<TaskRepository> logger)
+        {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<long> AddExecutor(long taskId, long executorId)
@@ -64,6 +67,7 @@ namespace FreelanceDB.Database.Repositories
                 return status;
             }
 
+            _logger.LogWarning($"An attempt to delete a performer from a non-existent task {DateTime.Now.ToString()}");
             throw new Exception("Unknown task.id");
         }
 
@@ -73,6 +77,7 @@ namespace FreelanceDB.Database.Repositories
 
             if(status == 0)
             {
+                _logger.LogWarning($"An attempt to delete a non-existent task {DateTime.Now.ToString()}");
                 throw new Exception("Unknown task.id");
             }
 
@@ -112,7 +117,9 @@ namespace FreelanceDB.Database.Repositories
 
             if(tasksEntity.Any())
             {
-                throw new Exception("Unknown task.authorId");
+                _logger.LogWarning($"An attempt to find tasks from the specified author: {authorId}" +
+                    $" {DateTime.Now.ToString()}");
+                throw new Exception("An attempt to find tasks from the specified author");
             }
 
             List<TaskModel> models = new List<TaskModel>();
@@ -144,7 +151,9 @@ namespace FreelanceDB.Database.Repositories
 
             if (tasksEntity.Any())
             {
-                throw new Exception("Unknown task.executorId");
+                _logger.LogInformation($"An attempt to find tasks with the specified performer: {executorId}" +
+                    $" {DateTime.Now.ToString()}");
+                throw new Exception("An attempt to find tasks with the specified performer");
             }
 
             List<TaskModel> models = new List<TaskModel>();
@@ -176,7 +185,8 @@ namespace FreelanceDB.Database.Repositories
 
             if (taskEntity == null)
             {
-                throw new Exception("Unknown task.id");
+                _logger.LogInformation($"Trying to find a non-existent task {DateTime.Now.ToString()}");
+                throw new Exception("Trying to find a non-existent task");
             }
 
             TaskModel model = new TaskModel()
