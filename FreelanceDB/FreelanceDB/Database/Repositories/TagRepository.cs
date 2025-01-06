@@ -9,10 +9,12 @@ namespace FreelanceDB.Database.Repositories
     public class TagRepository : ITagRepository
     {
         private readonly FreelancedbContext _context;
+        private readonly ILogger<TagRepository> _logger;
 
-        public TagRepository(FreelancedbContext context)
+        public TagRepository(FreelancedbContext context, ILogger<TagRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<long> AddTaskTag(long taskId, long tagId)
@@ -21,18 +23,21 @@ namespace FreelanceDB.Database.Repositories
                 .FirstOrDefaultAsync(p => p.TaskId == taskId && p.TagId == tagId);
             if(target != null)
             {
+                _logger.LogError($"Trying to add an existing tag to this task {DateTime.Now.ToString()}");
                 throw new Exception("This taskTag is already exists");
             }
 
             Entities.Task? targetTask = await _context.Tasks.FirstOrDefaultAsync(p => p.Id == taskId);
             if (targetTask == null)
             {
+                _logger.LogError($"An attempt to add a tag to a non-existent task {DateTime.Now.ToString()}");
                 throw new Exception("Unknown taskId");
             }
 
             Tag? targetTag = await _context.Tags.FirstOrDefaultAsync(p => p.Id == tagId);
             if (targetTag == null)
             {
+                _logger.LogError($"An attempt to add a non-existent tag to an task {DateTime.Now.ToString()}");
                 throw new Exception("Unknown tagId");
             }
 
@@ -64,6 +69,7 @@ namespace FreelanceDB.Database.Repositories
                 .FirstOrDefaultAsync(p => p.TaskId == taskId && p.TagId == tagId);
             if (target == null)
             {
+                _logger.LogError($"Attempt to delete a non-existent tag {DateTime.Now.ToString()}");
                 throw new Exception("This taskTag does not exists");
             }
 
@@ -79,6 +85,7 @@ namespace FreelanceDB.Database.Repositories
 
             if (task == null)
             {
+                _logger.LogWarning($"An attempt to get tags of a non-existent task {DateTime.Now.ToString()}");
                 throw new Exception("Unknown task");
             }
 
@@ -92,6 +99,8 @@ namespace FreelanceDB.Database.Repositories
 
                 if (tag == null)
                 {
+                    _logger.LogError($"A non-existent tag was found for the task: {taskId}" +
+                        $" {DateTime.Now.ToString()}");
                     throw new Exception("Unknown tag id");
                 }
 
@@ -110,6 +119,7 @@ namespace FreelanceDB.Database.Repositories
 
             if(targetTag == null)
             {
+                _logger.LogWarning($"Trying to find a non-existent tag in the database {DateTime.Now.ToString()}");
                 throw new Exception("Unknown tagId");
             }
 

@@ -9,10 +9,12 @@ namespace FreelanceDB.Database.Repositories
     public class ResumeRepository : IResumeRepository
     {
         private readonly FreelancedbContext _context;
+        private readonly ILogger<ResumeRepository> _logger;
 
-        public ResumeRepository(FreelancedbContext context)
+        public ResumeRepository(FreelancedbContext context, ILogger<ResumeRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<long> CreateResume(ResumeModel resume, long userId)
@@ -42,6 +44,7 @@ namespace FreelanceDB.Database.Repositories
 
             if(status == 0)
             {
+                _logger.LogWarning($"Attempt to delete a non-existent resume {DateTime.Now.ToString()}");
                 throw new Exception("Unknown resume.id");
             }
 
@@ -80,6 +83,7 @@ namespace FreelanceDB.Database.Repositories
 
             if(resumeEntity == null)
             {
+                _logger.LogWarning($"Attempt to get a non-existent resume {DateTime.Now.ToString()}");
                 throw new Exception("Unknown resume.id");
             }
 

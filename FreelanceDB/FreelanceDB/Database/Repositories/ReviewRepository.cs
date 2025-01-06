@@ -10,10 +10,12 @@ namespace FreelanceDB.Database.Repositories
     public class ReviewRepository : IReviewRepository
     {
         private readonly FreelancedbContext _context;
+        private readonly ILogger<ReviewRepository> _logger;
 
-        public ReviewRepository(FreelancedbContext context)
+        public ReviewRepository(FreelancedbContext context, ILogger<ReviewRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<long> CreateReview(ReviewModel model)
@@ -38,6 +40,7 @@ namespace FreelanceDB.Database.Repositories
 
             if(status == 0)
             {
+                _logger.LogWarning($"Attempt to delete a non-existent review {DateTime.Now.ToString()}");
                 throw new Exception("Unknown review.id");
             }
 
@@ -96,6 +99,7 @@ namespace FreelanceDB.Database.Repositories
 
             if(review == null)
             {
+                _logger.LogWarning($"Attempt to get a non-existent resume {DateTime.Now.ToString()}");
                 throw new Exception("Unknown review.id");
             }
 
