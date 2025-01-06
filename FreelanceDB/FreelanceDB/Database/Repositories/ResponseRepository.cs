@@ -10,10 +10,12 @@ namespace FreelanceDB.Database.Repositories
     public class ResponseRepository : IResponseRepository
     {
         private readonly FreelancedbContext _context;
+        private readonly ILogger<ResponseRepository> _logger;
 
-        public ResponseRepository(FreelancedbContext context)
+        public ResponseRepository(FreelancedbContext context, ILogger<ResponseRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // Очистка всех ответов, если был выбран исполняющий для задачи
@@ -37,6 +39,7 @@ namespace FreelanceDB.Database.Repositories
 
             if(task == null || user == null)
             {
+                _logger.LogWarning($"An attempt to respond from {userId} to task {taskId} {DateTime.Now.ToString()}");
                 throw new Exception("Unknown user or task");
             }
 
@@ -59,6 +62,8 @@ namespace FreelanceDB.Database.Repositories
 
             if(status == 0)
             {
+                _logger.LogWarning($"An attempt to delete a response from {userId} to task {taskId}" +
+                    $" {DateTime.Now.ToString()}");
                 throw new Exception("Unknown response");
             }
 
